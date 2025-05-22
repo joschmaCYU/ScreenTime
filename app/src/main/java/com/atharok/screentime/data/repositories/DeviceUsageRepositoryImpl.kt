@@ -1,0 +1,99 @@
+package com.atharok.screentime.data.repositories
+
+import android.content.Context
+import com.atharok.screentime.common.extensions.getApplicationIconSafety
+import com.atharok.screentime.common.extensions.getApplicationName
+import com.atharok.screentime.common.utils.DateTimeUtils
+import com.atharok.screentime.data.statsTracker.UsageStatsTracker
+import com.atharok.screentime.domain.entities.usage.DailyAppUsage
+import com.atharok.screentime.domain.entities.usage.DailyDeviceUsage
+import com.atharok.screentime.domain.entities.usage.WeeklyAppUsage
+import com.atharok.screentime.domain.entities.usage.WeeklyDeviceUsage
+import com.atharok.screentime.domain.repositories.DeviceUsageRepository
+
+class DeviceUsageRepositoryImpl(
+    private val context: Context,
+    private val tracker: UsageStatsTracker
+): DeviceUsageRepository {
+
+    // Permission
+
+    override fun hasAppUsagePermission(): Boolean = tracker.hasAppUsagePermission()
+
+    // Calculate
+
+    private var deviceUsageCacheByDayAndHour: Map<String, Map<Long, Array<Long>>>? = null
+    private var totalDeviceUsageCacheByDayAndHour: Map<Long, Array<Long>> = mapOf()
+    private var dateOfLastRefresh: String = ""
+
+    override suspend fun calculateDeviceUsage(
+        timeInterval: Pair<Long, Long>
+    ) {
+        tracker.calculateUsageIntervalsByPackage(
+            startTimestamp = timeInterval.first,
+            endTimestamp = timeInterval.second
+        )
+
+        deviceUsageCacheByDayAndHour = tracker.getDurationPerPackageByDayAndHour(
+            startTimestamp = timeInterval.first,
+            endTimestamp = timeInterval.second
+        )
+
+        totalDeviceUsageCacheByDayAndHour = tracker.getTotalDurationByDayAndHour(
+            startTimestamp = timeInterval.first,
+            endTimestamp = timeInterval.second
+        )
+
+        dateOfLastRefresh = DateTimeUtils.formatToFullDateTime(timeInterval.second)
+    }
+
+    override suspend fun getWeekDeviceUsage(
+        timeInterval: Pair<Long, Long>
+    ): WeeklyDeviceUsage {
+        deviceUsageCacheByDayAndHour?.let { deviceUsageCacheByDayAndHourNotNull ->
+            return WeeklyDeviceUsage(
+                usages = deviceUsageCacheByDayAndHourNotNull.mapValues { (key: String, value: Map<Long, Array<Long>>) ->
+                    WeeklyAppUsage(
+                        packageName = key,
+                        appName = context.packageManager.getApplicationName(key) ?: "",
+                        appIcon = context.packageManager.getApplicationIconSafety(key),
+                        durations = value
+                            .filterKeys { timestamp ->
+                                timestamp in timeInterval.first..timeInterval.second
+                            }
+                    )
+                },
+                timeInterval = timeInterval,
+                dateOfLastRefresh = dateOfLastRefresh,
+                totalDeviceUsageByDayAndHour = totalDeviceUsageCacheByDayAndHour.filterKeys { timestamp ->
+                    timestamp in timeInterval.first..timeInterval.second
+                }
+            )
+        } ?: run {
+            throw Exception("DeviceUsageRepositoryImpl.calculateDeviceUsage() not called.")
+        }
+    }
+
+    override suspend fun getDayDeviceUsage(
+        timeInterval: Pair<Long, Long>,
+        dayTimestamp: Long
+    ): DailyDeviceUsage {
+        deviceUsageCacheByDayAndHour?.let { deviceUsageCacheByDayAndHourNotNull ->
+            return DailyDeviceUsage(
+                usages = deviceUsageCacheByDayAndHourNotNull.mapValues { (key: String, value: Map<Long, Array<Long>>) ->
+                    DailyAppUsage(
+                        packageName = key,
+                        appName = context.packageManager.getApplicationName(key) ?: "",
+                        appIcon = context.packageManager.getApplicationIconSafety(key),
+                        durations = value[dayTimestamp] ?: Array(24) { 0L }
+                    )
+                },
+                timeInterval = timeInterval,
+                dateOfLastRefresh = dateOfLastRefresh,
+                totalDeviceUsageByHour = totalDeviceUsageCacheByDayAndHour[dayTimestamp] ?: Array(24) { 0L }
+            )
+        } ?: run {
+            throw Exception("DeviceUsageRepositoryImpl.calculateDeviceUsage() not called.")
+        }
+    }
+}

@@ -1,0 +1,96 @@
+package com.atharok.screentime.ui.components
+
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.TextUnit
+import com.atharok.screentime.ui.theme.Typography
+
+@Composable
+fun TextExtraLarge(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    maxLines: Int = 1,
+    textAlign: TextAlign? = null
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        color = color,
+        fontSize = fontSize,
+        style = Typography.headlineMedium,
+        fontWeight = FontWeight.SemiBold,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = maxLines,
+        textAlign = textAlign
+    )
+}
+
+@Composable
+fun TextLarge(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    maxLines: Int = 1,
+    textAlign: TextAlign? = null
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        color = color,
+        fontSize = fontSize,
+        style = Typography.titleLarge,
+        fontWeight = FontWeight.Medium,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = maxLines,
+        textAlign = textAlign
+    )
+}
+
+@Composable
+fun TextNormal(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    style: TextStyle = Typography.titleSmall,
+    fontWeight: FontWeight? = null,
+    textDecoration: TextDecoration? = null,
+    textAlign: TextAlign? = null
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        color = color,
+        fontSize = fontSize,
+        style = style,
+        fontWeight = fontWeight,
+        textDecoration = textDecoration,
+        textAlign = textAlign
+    )
+}
+
+@Composable
+fun TextSmall(
+    text: String,
+    modifier: Modifier = Modifier,
+    textAlign: TextAlign? = null
+) {
+    TextNormal(
+        text = text,
+        modifier = modifier,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        style = Typography.bodySmall,
+        textAlign = textAlign
+    )
+}
