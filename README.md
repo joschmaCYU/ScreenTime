@@ -48,7 +48,7 @@ If you have any questions regarding contributions or translations, feel free to 
 
 ## Licences
 
-The code is licensed under the [GPLv3](https://www.gnu.org/licenses/gpl-3.0).
+The code is licensed under the [GNU General Public License version 3 or later (GPL-3.0-or-later)](https://www.gnu.org/licenses/gpl-3.0).
 
 Dependencies:
 
