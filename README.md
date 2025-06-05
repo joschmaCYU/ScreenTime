@@ -4,6 +4,10 @@
 
 <div align="center"><h4>An Android app that allows you to easily track the time you spend on your device and apps.</h4></div>
 
+<div align="center">
+    <a href="https://f-droid.org/packages/com.atharok.screentime/" target="_blank"><img src="assets/get-it-on-f-droid-badge.png" alt="Get it on F-Droid" height="90"></a>
+</div>
+
 [![License: GPLv3](https://img.shields.io/badge/License-GPLv3-blue)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Description
