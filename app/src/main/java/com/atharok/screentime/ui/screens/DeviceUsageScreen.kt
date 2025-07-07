@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atharok.screentime.R
 import com.atharok.screentime.common.utils.DateTimeUtils
@@ -354,7 +355,12 @@ private fun ApplicationUsageItem(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TextNormal(text = appName)
+                    TextNormal(
+                        text = appName,
+                        modifier = Modifier.weight(1f),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
                     TextNormal(text = DateTimeUtils.formatToDuration(timeUsed))
                 }
 

@@ -66,7 +66,9 @@ fun TextNormal(
     style: TextStyle = Typography.titleSmall,
     fontWeight: FontWeight? = null,
     textDecoration: TextDecoration? = null,
-    textAlign: TextAlign? = null
+    textAlign: TextAlign? = null,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE
 ) {
     Text(
         text = text,
@@ -76,7 +78,9 @@ fun TextNormal(
         style = style,
         fontWeight = fontWeight,
         textDecoration = textDecoration,
-        textAlign = textAlign
+        textAlign = textAlign,
+        overflow = overflow,
+        maxLines = maxLines
     )
 }
 
