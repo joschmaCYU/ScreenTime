@@ -50,50 +50,50 @@ class DeviceUsageRepositoryImpl(
     override suspend fun getWeekDeviceUsage(
         timeInterval: Pair<Long, Long>
     ): WeeklyDeviceUsage {
-        deviceUsageCacheByDayAndHour?.let { deviceUsageCacheByDayAndHourNotNull ->
-            return WeeklyDeviceUsage(
-                usages = deviceUsageCacheByDayAndHourNotNull.mapValues { (key: String, value: Map<Long, Array<Long>>) ->
-                    WeeklyAppUsage(
-                        packageName = key,
-                        appName = context.packageManager.getApplicationName(key) ?: "",
-                        appIcon = context.packageManager.getApplicationIconSafety(key),
-                        durations = value
-                            .filterKeys { timestamp ->
-                                timestamp in timeInterval.first..timeInterval.second
-                            }
-                    )
-                },
-                timeInterval = timeInterval,
-                dateOfLastRefresh = dateOfLastRefresh,
-                totalDeviceUsageByDayAndHour = totalDeviceUsageCacheByDayAndHour.filterKeys { timestamp ->
-                    timestamp in timeInterval.first..timeInterval.second
-                }
-            )
-        } ?: run {
-            throw Exception("DeviceUsageRepositoryImpl.calculateDeviceUsage() not called.")
-        }
+
+        val deviceUsageCacheByDayAndHourNotNull = deviceUsageCacheByDayAndHour
+        if(deviceUsageCacheByDayAndHourNotNull == null) throw Exception("DeviceUsageRepositoryImpl.calculateDeviceUsage() not called.")
+
+        return WeeklyDeviceUsage(
+            usages = deviceUsageCacheByDayAndHourNotNull.mapValues { (key: String, value: Map<Long, Array<Long>>) ->
+                WeeklyAppUsage(
+                    packageName = key,
+                    appName = context.packageManager.getApplicationName(key) ?: "",
+                    appIcon = context.packageManager.getApplicationIconSafety(key),
+                    durations = value
+                        .filterKeys { timestamp ->
+                            timestamp in timeInterval.first..timeInterval.second
+                        }
+                )
+            },
+            timeInterval = timeInterval,
+            dateOfLastRefresh = dateOfLastRefresh,
+            totalDeviceUsageByDayAndHour = totalDeviceUsageCacheByDayAndHour.filterKeys { timestamp ->
+                timestamp in timeInterval.first..timeInterval.second
+            }
+        )
     }
 
     override suspend fun getDayDeviceUsage(
         timeInterval: Pair<Long, Long>,
         dayTimestamp: Long
     ): DailyDeviceUsage {
-        deviceUsageCacheByDayAndHour?.let { deviceUsageCacheByDayAndHourNotNull ->
-            return DailyDeviceUsage(
-                usages = deviceUsageCacheByDayAndHourNotNull.mapValues { (key: String, value: Map<Long, Array<Long>>) ->
-                    DailyAppUsage(
-                        packageName = key,
-                        appName = context.packageManager.getApplicationName(key) ?: "",
-                        appIcon = context.packageManager.getApplicationIconSafety(key),
-                        durations = value[dayTimestamp] ?: Array(24) { 0L }
-                    )
-                },
-                timeInterval = timeInterval,
-                dateOfLastRefresh = dateOfLastRefresh,
-                totalDeviceUsageByHour = totalDeviceUsageCacheByDayAndHour[dayTimestamp] ?: Array(24) { 0L }
-            )
-        } ?: run {
-            throw Exception("DeviceUsageRepositoryImpl.calculateDeviceUsage() not called.")
-        }
+
+        val deviceUsageCacheByDayAndHourNotNull = deviceUsageCacheByDayAndHour
+        if(deviceUsageCacheByDayAndHourNotNull == null) throw Exception("DeviceUsageRepositoryImpl.calculateDeviceUsage() not called.")
+
+        return DailyDeviceUsage(
+            usages = deviceUsageCacheByDayAndHourNotNull.mapValues { (key: String, value: Map<Long, Array<Long>>) ->
+                DailyAppUsage(
+                    packageName = key,
+                    appName = context.packageManager.getApplicationName(key) ?: "",
+                    appIcon = context.packageManager.getApplicationIconSafety(key),
+                    durations = value[dayTimestamp] ?: Array(24) { 0L }
+                )
+            },
+            timeInterval = timeInterval,
+            dateOfLastRefresh = dateOfLastRefresh,
+            totalDeviceUsageByHour = totalDeviceUsageCacheByDayAndHour[dayTimestamp] ?: Array(24) { 0L }
+        )
     }
 }
