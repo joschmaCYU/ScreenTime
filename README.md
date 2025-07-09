@@ -8,7 +8,7 @@
     <a href="https://f-droid.org/packages/com.atharok.screentime/" target="_blank"><img src="assets/get-it-on-f-droid-badge.png" alt="Get it on F-Droid" height="90"></a>
 </div>
 
-You may also download the APK directly from GitLab via this link: https://gitlab.com/Atharok/ScreenTime/-/releases
+You may also download the APK directly from [GitLab](https://gitlab.com/Atharok/ScreenTime/-/releases).
 
 [![License: GPLv3](https://img.shields.io/badge/License-GPLv3-blue)](https://www.gnu.org/licenses/gpl-3.0)
 
