@@ -39,6 +39,10 @@
     <string name="access_to_usage_data_message">Vous devez autoriser l\'accès aux données d\'utilisation pour pouvoir utiliser cette application</string>
     <string name="authorize">Autoriser</string>
 
+    <!-- Ignored Apps -->
+    <string name="manage_apps_to_ignore">Gérer les applications à ignorer</string>
+    <string name="apps_to_ignore">Applications à ignorer</string>
+
     <!-- Settings -->
     <string name="settings">Paramètres</string>
     <string name="appearance">Apparence</string>

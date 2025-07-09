@@ -112,11 +112,13 @@ private fun TotalUsageView(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Chart(
-                    period = period,
-                    data = chartValues,
-                    modifier = Modifier.padding(vertical = dimensionResource(id = R.dimen.padding_large))
-                )
+                if(chartValues.isNotEmpty()) {
+                    Chart(
+                        period = period,
+                        data = chartValues,
+                        modifier = Modifier.padding(vertical = dimensionResource(id = R.dimen.padding_large))
+                    )
+                }
 
                 bottomOfCard()
             }

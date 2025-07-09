@@ -33,7 +33,8 @@ class UsageStatsTracker(
      */
     suspend fun calculateUsageIntervalsByPackage(
         startTimestamp: Long,
-        endTimestamp: Long
+        endTimestamp: Long,
+        ignoredPackages: List<String>
     ) {
         val usageIntervals = mutableMapOf<String, MutableList<Pair<Long, Long>>>()
 
@@ -44,10 +45,12 @@ class UsageStatsTracker(
 
             while (usageEvents.hasNextEvent()) {
                 val event = UsageEvents.Event()
+
                 if(usageEvents.getNextEvent(event)) {
 
-                    event.packageName?.let { eventPackageName: String ->
+                    if(ignoredPackages.contains(event.packageName)) continue
 
+                    event.packageName?.let { eventPackageName: String ->
                         val packageClassName: String = event.className ?: eventPackageName
 
                         when(event.eventType) {

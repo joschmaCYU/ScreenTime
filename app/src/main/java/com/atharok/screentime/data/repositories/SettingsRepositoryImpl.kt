@@ -33,4 +33,10 @@ class SettingsRepositoryImpl(
     override suspend fun saveDefaultPeriod(period: Period) {
         settingsDataStore.saveDefaultPeriod(period)
     }
+
+    override fun getIgnoredPackages(): Flow<List<String>> = settingsDataStore.ignoredPackagesFlow
+
+    override suspend fun saveIgnoredPackages(ignoredPackages: List<String>) {
+        settingsDataStore.saveIgnoredPackages(ignoredPackages)
+    }
 }

@@ -31,4 +31,9 @@ class SettingsViewModel(
     fun saveDefaultPeriod(period: Period) = viewModelScope.launch {
         useCase.saveDefaultPeriod(period)
     }
+
+    val ignoredPackages: Flow<List<String>> get() = useCase.getIgnoredPackages()
+    fun saveIgnoredPackages(ignoredPackages: List<String>) = viewModelScope.launch {
+        useCase.saveIgnoredPackages(ignoredPackages)
+    }
 }

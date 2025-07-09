@@ -57,6 +57,7 @@ import com.atharok.screentime.ui.views.PeriodSelector
 @Composable
 fun SettingsScreen(
     navigateUp: () -> Unit,
+    openIgnoredAppsScreen: () -> Unit,
     openThirdLibrariesScreen: () -> Unit,
     settingsViewModel: SettingsViewModel,
     modifier: Modifier = Modifier
@@ -167,6 +168,19 @@ fun SettingsScreen(
                 defaultPeriod = defaultPeriod,
                 onDefaultPeriodChange = { settingsViewModel.saveDefaultPeriod(it) },
                 modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = horizontalPadding,
+                        vertical = verticalPadding
+                    )
+            )
+
+            SettingsText(
+                text = stringResource(id = R.string.manage_apps_to_ignore),
+                modifier = Modifier
+                    .clickable {
+                        openIgnoredAppsScreen()
+                    }
                     .fillMaxWidth()
                     .padding(
                         horizontal = horizontalPadding,

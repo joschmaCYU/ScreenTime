@@ -12,7 +12,8 @@ interface DeviceUsageRepository {
     // Calculate
 
     suspend fun calculateDeviceUsage(
-        timeInterval: Pair<Long, Long>
+        timeInterval: Pair<Long, Long>,
+        ignoredPackages: List<String>
     )
 
     suspend fun getWeekDeviceUsage(

@@ -27,11 +27,13 @@ class DeviceUsageRepositoryImpl(
     private var dateOfLastRefresh: String = ""
 
     override suspend fun calculateDeviceUsage(
-        timeInterval: Pair<Long, Long>
+        timeInterval: Pair<Long, Long>,
+        ignoredPackages: List<String>
     ) {
         tracker.calculateUsageIntervalsByPackage(
             startTimestamp = timeInterval.first,
-            endTimestamp = timeInterval.second
+            endTimestamp = timeInterval.second,
+            ignoredPackages = ignoredPackages
         )
 
         deviceUsageCacheByDayAndHour = tracker.getDurationPerPackageByDayAndHour(

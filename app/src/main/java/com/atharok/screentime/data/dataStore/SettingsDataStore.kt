@@ -13,6 +13,7 @@ import com.atharok.screentime.domain.entities.ThemeEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.json.Json
 import java.io.IOException
 
 class SettingsDataStore(private val context: Context) {
@@ -22,12 +23,14 @@ class SettingsDataStore(private val context: Context) {
         private const val DYNAMIC_COLORS_KEY = "material_you_key"
         private const val BLACK_COLOR_KEY = "black_color_key"
         private const val DEFAULT_PERIOD_KEY = "default_period_key"
+        private const val IGNORED_PACKAGES_KEY = "ignored_packages_key"
     }
 
     private val themeKey = stringPreferencesKey(THEME_KEY)
     private val useDynamicColorsKey = booleanPreferencesKey(DYNAMIC_COLORS_KEY)
     private val useBlackColorForDarkThemeKey = booleanPreferencesKey(BLACK_COLOR_KEY)
     private val defaultPeriodKey = stringPreferencesKey(DEFAULT_PERIOD_KEY)
+    private val ignoredPackagesKey = stringPreferencesKey(IGNORED_PACKAGES_KEY)
 
     private fun Flow<Preferences>.catchException(): Flow<Preferences> = this.catch {
         if (it is IOException) {
@@ -99,6 +102,22 @@ class SettingsDataStore(private val context: Context) {
     suspend fun saveDefaultPeriod(period: Period) {
         context.dataStore.edit {
             it[defaultPeriodKey] = period.name
+        }
+    }
+
+    // ---- Ignored packages ----
+
+    val ignoredPackagesFlow: Flow<List<String>> = context.dataStore.data
+        .catchException()
+        .map {
+            val jsonString: String? = it[ignoredPackagesKey]
+            if(jsonString == null) emptyList() else Json.decodeFromString(jsonString)
+        }
+
+    suspend fun saveIgnoredPackages(ignoredPackages: List<String>) {
+        val jsonString = Json.encodeToString(ignoredPackages)
+        context.dataStore.edit {
+            it[ignoredPackagesKey] = jsonString
         }
     }
 }

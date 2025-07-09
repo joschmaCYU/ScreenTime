@@ -37,10 +37,17 @@ class DeviceUsageViewModel(
     fun getDeviceUsageFlow(): StateFlow<Resource<DeviceUsage<out AppUsage>>> = usageUseCase.deviceUsageFlow
 
     fun calculateWeekDeviceUsage(useCache: Boolean = true) = viewModelScope.launch(Dispatchers.Default) {
-        usageUseCase.calculateWeekDeviceUsage(useCache)
+        usageUseCase.calculateWeekDeviceUsage(
+            ignoredPackages = settingsUseCase.getIgnoredPackages().first(),
+            useCache = useCache
+        )
     }
 
     fun calculateDayDeviceUsage(useCache: Boolean = true) = viewModelScope.launch(Dispatchers.Default) {
-        usageUseCase.calculateDayDeviceUsage(dayIndexState.intValue, useCache)
+        usageUseCase.calculateDayDeviceUsage(
+            ignoredPackages = settingsUseCase.getIgnoredPackages().first(),
+            dayIndex = dayIndexState.intValue,
+            useCache = useCache
+        )
     }
 }

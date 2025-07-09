@@ -117,5 +117,14 @@ enum class ThirdLibrary(
         codeUrl = R.string.vico_url,
         license = R.string.apache_license_2_0,
         licenseUrl = R.string.apache_license_2_0_url
+    ),
+
+    KOTLIN_SERIALIZATION(
+        title = R.string.kotlin_serialization_name,
+        id = R.string.kotlin_serialization_id,
+        codeHost = R.string.github,
+        codeUrl = R.string.kotlin_serialization_url,
+        license = R.string.apache_license_2_0,
+        licenseUrl = R.string.apache_license_2_0_url
     )
 }

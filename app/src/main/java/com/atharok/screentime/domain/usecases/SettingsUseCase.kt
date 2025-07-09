@@ -26,4 +26,9 @@ class SettingsUseCase(private val repository: SettingsRepository) {
     suspend fun saveDefaultPeriod(period: Period) {
         repository.saveDefaultPeriod(period)
     }
+
+    fun getIgnoredPackages(): Flow<List<String>> = repository.getIgnoredPackages()
+    suspend fun saveIgnoredPackages(ignoredPackages: List<String>) {
+        repository.saveIgnoredPackages(ignoredPackages)
+    }
 }

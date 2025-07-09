@@ -16,4 +16,7 @@ interface SettingsRepository {
 
     fun getDefaultPeriod(): Flow<Period>
     suspend fun saveDefaultPeriod(period: Period)
+
+    fun getIgnoredPackages(): Flow<List<String>>
+    suspend fun saveIgnoredPackages(ignoredPackages: List<String>)
 }

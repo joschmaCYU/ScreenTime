@@ -92,6 +92,7 @@ dependencies {
     implementation(libs.androidx.datastore)
     implementation(libs.koin.androidx.compose)
     implementation(libs.vico.compose.m3)
+    implementation(libs.kotlinx.serialization.json)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

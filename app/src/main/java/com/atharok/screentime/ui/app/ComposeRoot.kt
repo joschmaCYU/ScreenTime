@@ -18,6 +18,7 @@ import com.atharok.screentime.ui.navigation.AppNavHost
 import com.atharok.screentime.ui.navigation.navigateTo
 import com.atharok.screentime.ui.screens.ApplicationUsageScreen
 import com.atharok.screentime.ui.screens.DeviceUsageScreen
+import com.atharok.screentime.ui.screens.IgnoredAppsScreen
 import com.atharok.screentime.ui.screens.PermissionScreen
 import com.atharok.screentime.ui.screens.SettingsScreen
 import com.atharok.screentime.ui.screens.ThirdLibrariesScreen
@@ -93,9 +94,20 @@ fun ComposeRoot(
                 settingsScreen = {
                     SettingsScreen(
                         navigateUp = { navController.navigateUp() },
+                        openIgnoredAppsScreen = {
+                            navController.navigateTo(AppNavDestination.IgnoredAppsDestination.route)
+                        },
                         openThirdLibrariesScreen = {
                             navController.navigateTo(AppNavDestination.ThirdLibrariesDestination.route)
                         },
+                        settingsViewModel = settingsViewModel,
+                        modifier = Modifier
+                    )
+                },
+
+                ignoredAppsScreen = {
+                    IgnoredAppsScreen(
+                        navigateUp = { navController.navigateUp() },
                         settingsViewModel = settingsViewModel,
                         modifier = Modifier
                     )

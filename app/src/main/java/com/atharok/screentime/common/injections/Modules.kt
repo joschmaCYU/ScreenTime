@@ -18,6 +18,7 @@ import com.atharok.screentime.domain.repositories.SettingsRepository
 import com.atharok.screentime.domain.usecases.DeviceUsageUseCase
 import com.atharok.screentime.domain.usecases.SettingsUseCase
 import com.atharok.screentime.presentation.viewmodel.DeviceUsageViewModel
+import com.atharok.screentime.presentation.viewmodel.InstalledPackagesViewModel
 import com.atharok.screentime.presentation.viewmodel.SettingsViewModel
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
 import org.koin.android.ext.koin.androidContext
@@ -96,6 +97,10 @@ private val viewModelModule: Module = module {
         SettingsViewModel(
             useCase = get<SettingsUseCase>()
         )
+    }
+
+    viewModel {
+        InstalledPackagesViewModel()
     }
 }
 
