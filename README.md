@@ -8,6 +8,8 @@
     <a href="https://f-droid.org/packages/com.atharok.screentime/" target="_blank"><img src="assets/get-it-on-f-droid-badge.png" alt="Get it on F-Droid" height="90"></a>
 </div>
 
+You may also download the APK directly from GitLab via this link: https://gitlab.com/Atharok/ScreenTime/-/releases
+
 [![License: GPLv3](https://img.shields.io/badge/License-GPLv3-blue)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Description
@@ -49,6 +51,16 @@ If you like Screen Time, you can support me via [Liberapay](https://liberapay.co
 
 If you want to translate the app, please submit a merge request on GitLab.
 If you have any questions regarding contributions or translations, feel free to open an issue or contact me by [e-mail](mailto:atharok@duck.com).
+
+## Checksums
+
+To verify the authenticity and integrity of the APK, compare its signature against the certificate fingerprints shown below:
+
+```
+SHA-256: e6cf1629d462a3686aa4ba2d37e02777257fd0a3bbe5540d8c70f80e12d111cd
+SHA-1: 8d66ed4b5d105f7fecce6ebd07dddc569cab29b9
+MD5: ea0d7434b89110e49386132bb005bb6b
+```
 
 ## Licences
 
