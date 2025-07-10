@@ -43,7 +43,6 @@ class DeviceUsageUseCase(private val repository: DeviceUsageRepository) {
         ignoredPackages: List<String>,
         useCache: Boolean = true
     ) {
-
         _deviceUsageFlow.value = Resource.loading()
 
         try {
@@ -80,8 +79,8 @@ class DeviceUsageUseCase(private val repository: DeviceUsageRepository) {
         dayIndex: Int,
         useCache: Boolean = true
     ) {
-
-        _deviceUsageFlow.value = Resource.loading()
+        if(!useCache) // -> Condition to prevent re-displaying the loading screen when switching days
+            _deviceUsageFlow.value = Resource.loading()
 
         try {
             if(!isInitialised || !useCache) {

@@ -48,7 +48,7 @@ class DurationFormater(private val context: Context) {
     private fun formatTime(value: Number, @StringRes stringRes: Int): String {
         return getString(stringRes, String.format(Locale.getDefault(), "%02d", value))
     }
-    private fun formatDays(days: Number): String = formatTime(days, R.string.day_unit)
+    private fun formatDays(days: Number): String = getString(R.string.day_unit, days)
     private fun formatHours(hours: Number): String = formatTime(hours, R.string.hour_unit)
     private fun formatMinutes(minutes: Number): String = formatTime(minutes, R.string.minute_unit)
     private fun formatSeconds(seconds: Number): String = formatTime(seconds, R.string.second_unit)

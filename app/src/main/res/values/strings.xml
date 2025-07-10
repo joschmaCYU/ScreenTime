@@ -74,7 +74,7 @@
 
     <!-- Third Library -->
 
-    <string name="github" translatable="false">Github</string>
+    <string name="github" translatable="false">GitHub</string>
     <string name="apache_license_2.0" translatable="false">Apache License 2.0</string>
     <string name="apache_license_2.0_url" translatable="false">http://www.apache.org/licenses/LICENSE-2.0</string>
 
