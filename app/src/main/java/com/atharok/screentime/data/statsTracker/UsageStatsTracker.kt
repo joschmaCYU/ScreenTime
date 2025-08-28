@@ -4,7 +4,6 @@ import android.app.AppOpsManager
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
-import com.atharok.screentime.common.extensions.checkOpNoThrowCompat
 import com.atharok.screentime.common.utils.DateTimeUtils
 
 class UsageStatsTracker(
@@ -16,7 +15,7 @@ class UsageStatsTracker(
     // ---- Permission ----
 
     fun hasAppUsagePermission(): Boolean {
-        val mode = appOps.checkOpNoThrowCompat(
+        val mode = appOps.checkOpNoThrow(
             AppOpsManager.OPSTR_GET_USAGE_STATS,
             android.os.Process.myUid(),
             context.packageName
