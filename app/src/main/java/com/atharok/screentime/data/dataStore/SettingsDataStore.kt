@@ -90,12 +90,12 @@ class SettingsDataStore(private val context: Context) {
     val defaultPeriodFlow: Flow<Period> = context.dataStore.data
         .catchException()
         .map { preferences ->
-            preferences[defaultPeriodKey] ?: Period.WEEK.name
+            preferences[defaultPeriodKey] ?: Period.DAY.name
         }.map {
             try {
                 Period.valueOf(it)
             } catch (_: IllegalArgumentException) {
-                Period.WEEK
+                Period.DAY
             }
         }
 

@@ -84,7 +84,7 @@ fun SettingsScreen(
             val theme: ThemeEntity by settingsViewModel.theme.collectAsStateWithLifecycle(initialValue = ThemeEntity.SYSTEM)
             val useBlackColorForDarkTheme: Boolean by settingsViewModel.useBlackColorForDarkTheme.collectAsStateWithLifecycle(initialValue = false)
             // Display
-            val defaultPeriod: Period by settingsViewModel.defaultPeriod.collectAsStateWithLifecycle(initialValue = Period.WEEK)
+            val defaultPeriod: Period by settingsViewModel.defaultPeriod.collectAsStateWithLifecycle(initialValue = Period.DAY)
 
             // ---- Appearance ----
 
