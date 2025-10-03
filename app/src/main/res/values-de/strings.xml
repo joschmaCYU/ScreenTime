@@ -40,17 +40,17 @@
     <string name="authorize">Berechtige</string>
 
     <!-- Ignored Apps -->
-    <string name="manage_apps_to_ignore">Verwalte Apps die ignorierten Apps</string>
+    <string name="manage_apps_to_ignore">Verwalte die ignorierten Apps</string>
     <string name="apps_to_ignore">Ignorierte Apps</string>
 
     <!-- Settings -->
     <string name="settings">Einstellungen</string>
     <string name="appearance">Darstellung</string>
-    <string name="theme">Thema</string>
+    <string name="theme">Theme</string>
     <string name="theme_system">System</string>
     <string name="theme_light">Hell</string>
     <string name="theme_dark">Dunkel</string>
-    <string name="theme_black">Echtes Schwarz für das dunkle Thema</string>
+    <string name="theme_black">Echtes Schwarz für das dunkle Theme</string>
     <string name="theme_black_oled_info">Verbraucht weniger Energie auf OLED Bildschirmen</string>
     <string name="dynamic_colors">Dynamische Farben</string>
     <string name="display">Display</string>
@@ -62,7 +62,7 @@
     <string name="screen_time_calculation_method_part_2_title">Fälle in denen die Bildschirmzeit möglicherweise nicht gezählt wird</string>
     <string name="screen_time_calculation_method_part_2_details">- Wenn das Android System das Ereignis nicht aufzeichnet wenn eine App geöffnet oder geschlossen wird, wird die während dieser Sitzung verbrachte Zeit nicht gezählt.\n\n- Wenn eine App deinstalliert wird löscht das Android System alle Ereignisse die mit ihrer Nutzung zusammenhängen. Daher wird die Bildschirmzeit für diese App nicht mehr gezählt.</string>
     <string name="screen_time_calculation_method_part_3_title">Wie wird die Bildschirmzeit berechnet wenn mehrere Apps gleichzeitig im Vordergrund benutzt werden?</string>
-    <string name="screen_time_calculation_method_part_3_details">Wenn mehrere Apps gleichzeitig im Vordergrund verwendet werden (zum Beispiel, im Split-Screen Modus), wird die Nutzungszeit für jede App einzeln gezählt.\n\nFür die gesamte Bildschirmzeit, wird jedoch nur die wirklich vor dem Bildschirm verbrachte Zeit gezählt, egal wie viele Apps gleichzeitig im Fordergrund aktiv waren.\n\nZum Beispiel, wenn zwei Apps gleichzeitig im Vordergrund für 40 Minuten benutzt werden, wird jede App 40 Minuten Nutzungszeit anzeigen, aber die gesamte Bildschirmzeit wird bei 40 Minuten bleiben und nicht 80.</string>
+    <string name="screen_time_calculation_method_part_3_details">Wenn mehrere Apps gleichzeitig im Vordergrund verwendet werden (z.B., im Split-Screen Modus), wird die Nutzungszeit für jede App einzeln gezählt.\n\nFür die gesamte Bildschirmzeit, wird jedoch nur die wirklich vor dem Bildschirm verbrachte Zeit gezählt, egal wie viele Apps gleichzeitig im Vordergrund aktiv waren.\n\nZum Beispiel, wenn zwei Apps gleichzeitig im Vordergrund für 40 Minuten benutzt werden, werden bei beiden Apps 40 Minuten Nutzungszeit addiert, aber auf die gesamte Bildschirmzeit werden nur 40 Minuten addiert und nicht 80.</string>
     <string name="language">Sprache</string>
     <string name="third_party_library">Bibliotheken von Drittanbietern</string>
     <string name="website">Website</string>
