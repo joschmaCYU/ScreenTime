@@ -17,6 +17,7 @@
     <!-- Period -->
     <string name="week">Semaine</string>
     <string name="day">Jour</string>
+    <string name="today">Aujourd\'hui</string>
 
     <!-- Date - Time units -->
     <string name="day_unit">%1$sj</string>

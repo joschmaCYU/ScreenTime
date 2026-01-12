@@ -16,6 +16,7 @@ import com.atharok.screentime.data.statsTracker.UsageStatsTracker
 import com.atharok.screentime.domain.repositories.DeviceUsageRepository
 import com.atharok.screentime.domain.repositories.SettingsRepository
 import com.atharok.screentime.domain.usecases.DeviceUsageUseCase
+import com.atharok.screentime.domain.usecases.GlanceTodayDeviceUsageUseCase
 import com.atharok.screentime.domain.usecases.SettingsUseCase
 import com.atharok.screentime.presentation.viewmodel.DeviceUsageViewModel
 import com.atharok.screentime.presentation.viewmodel.InstalledPackagesViewModel
@@ -107,6 +108,12 @@ private val viewModelModule: Module = module {
 private val useCaseModule: Module = module {
     single {
         DeviceUsageUseCase(
+            repository = get<DeviceUsageRepository>()
+        )
+    }
+
+    single {
+        GlanceTodayDeviceUsageUseCase(
             repository = get<DeviceUsageRepository>()
         )
     }

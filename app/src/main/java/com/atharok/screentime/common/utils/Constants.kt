@@ -14,3 +14,10 @@ const val WEB_SITE_LINK = "https://atharok.gitlab.io/site/projects/screen-time/"
 const val NUMBER_OF_DAYS = 10
 const val MILLIS_IN_A_DAY = 24L * 60L * 60L * 1000L
 const val MILLIS_IN_A_HOUR = 3600L * 1000L
+
+// Glance
+
+const val GLANCE_PREFERENCES_FAILURE = "failure"
+const val GLANCE_PREFERENCES_LOADING = "loading"
+const val GLANCE_PREFERENCES_TODAY_DEVICE_USAGE = "today_device_usage"
+const val GLANCE_PREFERENCES_REFRESH_TIMESTAMP = "refresh_timestamp"

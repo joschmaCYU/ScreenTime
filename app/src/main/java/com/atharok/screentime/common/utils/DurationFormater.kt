@@ -23,10 +23,10 @@ class DurationFormater(private val context: Context) {
     fun formatTimestampToDuration(timestamp: Long): String {
         val (days, hours, minutes, seconds) = calculateTime(timestamp)
         return when {
-            days > 0 -> "${formatDays(days)}, ${formatHours(hours)}"
-            hours > 0 -> "${formatHours(hours)}${formatMinutes(minutes)}"
-            minutes > 0 -> "${formatMinutes(minutes)}${formatSeconds(seconds)}"
-            else -> formatSeconds(seconds)
+            days > 0 -> "${getString(R.string.day_unit, days)}, ${formatTime(hours, R.string.hour_unit)}"
+            hours > 0 -> "${getString(R.string.hour_unit, hours)} ${formatTime(minutes, R.string.minute_unit)}"
+            minutes > 0 -> "${getString(R.string.minute_unit, minutes)} ${formatTime(seconds, R.string.second_unit)}"
+            else -> getString(R.string.second_unit, seconds)
         }
     }
 
@@ -48,10 +48,6 @@ class DurationFormater(private val context: Context) {
     private fun formatTime(value: Number, @StringRes stringRes: Int): String {
         return getString(stringRes, String.format(Locale.getDefault(), "%02d", value))
     }
-    private fun formatDays(days: Number): String = getString(R.string.day_unit, days)
-    private fun formatHours(hours: Number): String = formatTime(hours, R.string.hour_unit)
-    private fun formatMinutes(minutes: Number): String = formatTime(minutes, R.string.minute_unit)
-    private fun formatSeconds(seconds: Number): String = formatTime(seconds, R.string.second_unit)
 
     // ---------------------------------------------------------------------------------------------
 
