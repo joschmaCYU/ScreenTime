@@ -4,6 +4,7 @@ import android.app.AppOpsManager
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
+import android.util.Log
 import com.atharok.screentime.common.utils.DateTimeUtils
 
 class UsageStatsTracker(
@@ -25,6 +26,11 @@ class UsageStatsTracker(
 
     // ---- Usage calculation ----
 
+    private data class ResumedPackage(
+        val packageName: String,
+        val timestamp: Long,
+    )
+
     private lateinit var usageIntervalsByPackage: Map<String, List<Pair<Long, Long>>>
 
     /**
@@ -39,8 +45,8 @@ class UsageStatsTracker(
 
         usageStatsManager.queryEvents(startTimestamp, endTimestamp)?.let { usageEvents: UsageEvents ->
 
-            val resumedPackageTimestamp = mutableMapOf<String, Long>()
-            val isPackageMoveToBackground = mutableMapOf<String, Boolean>()
+            val resumedPackages = mutableMapOf<String, ResumedPackage>()
+            var isFirstResumedCalled = false
 
             while (usageEvents.hasNextEvent()) {
                 val event = UsageEvents.Event()
@@ -53,29 +59,51 @@ class UsageStatsTracker(
                         val packageClassName: String = event.className ?: eventPackageName
 
                         when(event.eventType) {
+
                             UsageEvents.Event.ACTIVITY_RESUMED -> {
-                                resumedPackageTimestamp[packageClassName] = event.timeStamp
-                                isPackageMoveToBackground[packageClassName] = false
+                                resumedPackages[packageClassName] = ResumedPackage(
+                                    packageName = eventPackageName,
+                                    timestamp = event.timeStamp
+                                )
+                                isFirstResumedCalled = true
                             }
+
                             UsageEvents.Event.ACTIVITY_PAUSED, UsageEvents.Event.ACTIVITY_STOPPED -> {
                                 // If the app is in the foreground.
-                                if(isPackageMoveToBackground[packageClassName] != true) {
-                                    (resumedPackageTimestamp[packageClassName] ?: event.timeStamp).let { resumedTimestamp: Long ->
-                                        // If less than 0, this means that the app is already stopped.
-                                        if (resumedTimestamp >= 0L) {
-                                            usageIntervals.getOrPut(eventPackageName) {
-                                                mutableListOf()
-                                            }.add(Pair(resumedTimestamp, event.timeStamp))
-                                        }
+                                resumedPackages[packageClassName]?.let { resumedPackage ->
+                                    usageIntervals
+                                        .getOrPut(eventPackageName) { mutableListOf() }
+                                        .add(resumedPackage.timestamp to event.timeStamp)
+                                    resumedPackages.remove(packageClassName)
+                                } ?: run {
+                                    // If the first RESUMED state was not called, we assume it
+                                    // occurred before the start timestamp passed as a function
+                                    // parameter. Therefore we add the interval between the provided
+                                    // start timestamp and the current PAUSED/STOPPED timestamp.
+                                    if(!isFirstResumedCalled) {
+                                        usageIntervals
+                                            .getOrPut(eventPackageName) { mutableListOf() }
+                                            .add(startTimestamp to event.timeStamp)
+                                        isFirstResumedCalled = true
                                     }
-                                    resumedPackageTimestamp[packageClassName] = -1L
-                                    isPackageMoveToBackground[packageClassName] = true
                                 }
                             }
+
                         }
 
                     }
                 }
+            }
+
+            // If the last retrieved event was in the RESUMED state, we add the interval between
+            // the timestamp of that RESUMED event and the end timestamp provided as a function
+            // parameter.
+            resumedPackages.maxByOrNull {
+                it.value.timestamp
+            }?.value?.let { lastResumedPackage: ResumedPackage ->
+                usageIntervals
+                    .getOrPut(lastResumedPackage.packageName) { mutableListOf() }
+                    .add(lastResumedPackage.timestamp to endTimestamp)
             }
         }
 
@@ -207,7 +235,7 @@ class UsageStatsTracker(
 
         var currentTimestamp = DateTimeUtils.truncateToDay(startTimestamp)
         while(currentTimestamp < endTimestamp) {
-            durationsByDayAndHour.put(currentTimestamp, Array(24) { 0L })
+            durationsByDayAndHour[currentTimestamp] = Array(24) { 0L }
             currentTimestamp = DateTimeUtils.addDaysToTimestamp(currentTimestamp, 1)
         }
 
