@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atharok.screentime.R
 import com.atharok.screentime.common.utils.DateTimeUtils
@@ -37,6 +36,7 @@ import com.atharok.screentime.ui.components.LoadingDialog
 import com.atharok.screentime.ui.components.RefreshAction
 import com.atharok.screentime.ui.components.SettingsAction
 import com.atharok.screentime.ui.components.TextNormal
+import com.atharok.screentime.ui.components.TextNormalSecondary
 import com.atharok.screentime.ui.components.TextSmall
 import com.atharok.screentime.ui.views.PeriodSelector
 import com.atharok.screentime.ui.views.TotalUsageView
@@ -358,13 +358,18 @@ private fun ApplicationUsageItem(
                     TextNormal(
                         text = appName,
                         modifier = Modifier.weight(1f),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        maxLines = 1
                     )
-                    TextNormal(text = DateTimeUtils.formatToDuration(timeUsed))
+                    TextNormal(
+                        text = DateTimeUtils.formatToDuration(timeUsed),
+                        maxLines = 1
+                    )
                 }
 
-                TextSmall(text = packageName)
+                TextNormalSecondary(
+                    text = packageName,
+                    maxLines = 1
+                )
 
                 LinearProgressIndicator(
                     progress = { percentUsed },

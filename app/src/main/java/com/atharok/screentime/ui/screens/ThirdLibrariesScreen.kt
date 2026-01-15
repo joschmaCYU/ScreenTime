@@ -26,7 +26,7 @@ import com.atharok.screentime.ui.components.AppScaffold
 import com.atharok.screentime.ui.components.MaterialFilledTonalButton
 import com.atharok.screentime.ui.components.NavigateUpAction
 import com.atharok.screentime.ui.components.TextNormal
-import com.atharok.screentime.ui.components.TextSmall
+import com.atharok.screentime.ui.components.TextNormalSecondary
 
 @Composable
 fun ThirdLibrariesScreen(
@@ -82,7 +82,7 @@ private fun ThirdLibraryItem(
         modifier = modifier
     ) {
         TextNormal(text = stringResource(id = library.title))
-        TextSmall(text = stringResource(id = library.id))
+        TextNormalSecondary(text = stringResource(id = library.id))
 
         Row(
             modifier = Modifier

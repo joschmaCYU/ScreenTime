@@ -109,10 +109,10 @@ private fun Section(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
-        TextNormal(
+        TextMedium(
             text = title
         )
-        TextSmall(
+        TextNormalSecondary(
             text = message,
             modifier = Modifier.padding(vertical = dimensionResource(id = R.dimen.padding_large))
         )

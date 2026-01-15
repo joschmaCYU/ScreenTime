@@ -31,7 +31,7 @@ import com.atharok.screentime.ui.components.AppScaffold
 import com.atharok.screentime.ui.components.ApplicationIcon
 import com.atharok.screentime.ui.components.NavigateUpAction
 import com.atharok.screentime.ui.components.TextNormal
-import com.atharok.screentime.ui.components.TextSmall
+import com.atharok.screentime.ui.components.TextNormalSecondary
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -150,7 +150,7 @@ private fun InstalledAppsItem(
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
             )
-            TextSmall(text = packageName)
+            TextNormalSecondary(text = packageName)
         }
 
         Switch(

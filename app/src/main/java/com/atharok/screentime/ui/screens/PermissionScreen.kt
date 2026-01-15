@@ -35,8 +35,8 @@ import com.atharok.screentime.ui.components.AppScaffold
 import com.atharok.screentime.ui.components.MaterialButton
 import com.atharok.screentime.ui.components.OnLifecycleEvent
 import com.atharok.screentime.ui.components.SettingsAction
-import com.atharok.screentime.ui.components.TextNormal
-import com.atharok.screentime.ui.components.TextSmall
+import com.atharok.screentime.ui.components.TextMedium
+import com.atharok.screentime.ui.components.TextNormalSecondary
 
 @Composable
 fun PermissionScreen(
@@ -154,13 +154,13 @@ private fun ActivationScreen(
                         colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                     )
 
-                    TextNormal(
+                    TextMedium(
                         text = title,
                         Modifier.padding(vertical = dimensionResource(id = R.dimen.padding_normal)),
                         textAlign = TextAlign.Center
                     )
 
-                    TextSmall(
+                    TextNormalSecondary(
                         text = message,
                         textAlign = TextAlign.Center
                     )

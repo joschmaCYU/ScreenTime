@@ -28,7 +28,7 @@ fun TextExtraLarge(
         color = color,
         fontSize = fontSize,
         style = Typography.headlineMedium,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Bold,
         overflow = TextOverflow.Ellipsis,
         maxLines = maxLines,
         textAlign = textAlign
@@ -50,12 +50,37 @@ fun TextLarge(
         color = color,
         fontSize = fontSize,
         style = Typography.titleLarge,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Bold,
         overflow = TextOverflow.Ellipsis,
         maxLines = maxLines,
         textAlign = textAlign
     )
 }
+
+// ---- Medium ----
+
+@Composable
+fun TextMedium(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    textAlign: TextAlign? = null,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
+    maxLines: Int = Int.MAX_VALUE
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        color = color,
+        style = Typography.titleMedium,
+        fontWeight = FontWeight.SemiBold,
+        textAlign = textAlign,
+        overflow = overflow,
+        maxLines = maxLines
+    )
+}
+
+// ---- Normal ----
 
 @Composable
 fun TextNormal(
@@ -67,7 +92,7 @@ fun TextNormal(
     fontWeight: FontWeight? = null,
     textDecoration: TextDecoration? = null,
     textAlign: TextAlign? = null,
-    overflow: TextOverflow = TextOverflow.Clip,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
     maxLines: Int = Int.MAX_VALUE
 ) {
     Text(
@@ -83,6 +108,28 @@ fun TextNormal(
         maxLines = maxLines
     )
 }
+
+@Composable
+fun TextNormalSecondary(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    textAlign: TextAlign? = null,
+    overflow: TextOverflow = TextOverflow.Ellipsis,
+    maxLines: Int = Int.MAX_VALUE
+) {
+    TextNormal(
+        text = text,
+        modifier = modifier,
+        color = color,
+        style = Typography.bodyMedium,
+        textAlign = textAlign,
+        overflow = overflow,
+        maxLines = maxLines
+    )
+}
+
+// ---- Small ----
 
 @Composable
 fun TextSmall(

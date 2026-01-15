@@ -51,7 +51,7 @@ import com.atharok.screentime.ui.components.ListDialog
 import com.atharok.screentime.ui.components.NavigateUpAction
 import com.atharok.screentime.ui.components.ScreenTimeCalculationMethodModalBottomSheet
 import com.atharok.screentime.ui.components.TextNormal
-import com.atharok.screentime.ui.components.TextSmall
+import com.atharok.screentime.ui.components.TextNormalSecondary
 import com.atharok.screentime.ui.views.PeriodSelector
 
 @Composable
@@ -295,7 +295,7 @@ private fun SettingsDefaultPeriodSelector(
             modifier = Modifier.fillMaxSize()
         )
 
-        TextSmall(
+        TextNormalSecondary(
             text = stringResource(id = defaultPeriod.stringRes),
             modifier = Modifier.fillMaxSize().padding(bottom = dimensionResource(R.dimen.padding_small))
         )
@@ -369,7 +369,7 @@ private fun <T> StatelessSettingsListDialog(
             .then(modifier)
     ) {
         TextNormal(text = stringResource(id = title))
-        TextSmall(text = convertValueToString(value))
+        TextNormalSecondary(text = convertValueToString(value))
     }
 }
 
@@ -415,7 +415,7 @@ private fun SettingsSwitch(
         ) {
             TextNormal(text = primaryText)
             secondaryText?.let {
-                TextSmall(text = it)
+                TextNormalSecondary(text = it)
             }
         }
 
