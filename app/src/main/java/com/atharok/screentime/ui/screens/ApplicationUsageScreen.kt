@@ -12,6 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -30,6 +31,7 @@ import com.atharok.screentime.ui.components.SettingsAction
 import com.atharok.screentime.ui.components.TextSmall
 import com.atharok.screentime.ui.views.PeriodSelector
 import com.atharok.screentime.ui.views.TotalUsageView
+import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
 
 @Composable
 fun ApplicationUsageScreen(
@@ -82,7 +84,8 @@ private fun StatelessApplicationUsageScreen(
     navigateUp: () -> Unit,
     openSettingsScreen: () -> Unit,
     refresh: (Period) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    modelProducer: CartesianChartModelProducer = remember { CartesianChartModelProducer() }
 ) {
     ApplicationUsageScaffold(
         packageName = packageName,
@@ -135,6 +138,7 @@ private fun StatelessApplicationUsageScreen(
                         onDayIndexChange = onDayIndexChange,
                         deviceUsage = deviceUsageResource.data,
                         appUsage = deviceUsageResource.data.getAppUsage(packageName),
+                        modelProducer = modelProducer,
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
@@ -152,6 +156,7 @@ private fun TotalUsageView(
     onDayIndexChange: (Int) -> Unit,
     deviceUsage: DeviceUsage<*>,
     appUsage: AppUsage,
+    modelProducer: CartesianChartModelProducer,
     modifier: Modifier = Modifier
 ) {
     if(period == Period.WEEK) {
@@ -161,6 +166,7 @@ private fun TotalUsageView(
             averageTime = appUsage.getAverageTimeUsed(),
             timeIntervalStart = deviceUsage.timeIntervalStart,
             timeIntervalEnd = deviceUsage.timeIntervalEnd,
+            modelProducer = modelProducer,
             chartValues = appUsage.getChartValues(),
             dateOfLastRefresh = deviceUsage.dateOfLastRefresh,
             modifier = modifier
@@ -173,6 +179,7 @@ private fun TotalUsageView(
             totalTime = appUsage.getTotalTimeUsed(),
             averageTime = appUsage.getAverageTimeUsed(),
             timestamp = deviceUsage.timeIntervalStart,
+            modelProducer = modelProducer,
             chartValues = appUsage.getChartValues(),
             dateOfLastRefresh = deviceUsage.dateOfLastRefresh,
             modifier = modifier

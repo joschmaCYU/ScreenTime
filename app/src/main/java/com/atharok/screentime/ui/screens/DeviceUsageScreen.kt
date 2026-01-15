@@ -18,6 +18,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,6 +41,7 @@ import com.atharok.screentime.ui.components.TextNormalSecondary
 import com.atharok.screentime.ui.components.TextSmall
 import com.atharok.screentime.ui.views.PeriodSelector
 import com.atharok.screentime.ui.views.TotalUsageView
+import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
 
 @Composable
 fun DeviceUsageScreen(
@@ -90,7 +92,8 @@ private fun StatelessDeviceUsageScreen(
     openApplicationUsageScreen: (appPackageName: String) -> Unit,
     openSettingsScreen: () -> Unit,
     refresh: (Period) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    modelProducer: CartesianChartModelProducer = remember { CartesianChartModelProducer() }
 ) {
     AppScaffold(
         title = stringResource(id = R.string.app_name),
@@ -122,7 +125,8 @@ private fun StatelessDeviceUsageScreen(
                 onDayIndexChange = onDayIndexChange,
                 deviceUsageResource = deviceUsageResource,
                 openApplicationUsageScreen = openApplicationUsageScreen,
-                innerPadding = innerPadding
+                innerPadding = innerPadding,
+                modelProducer = modelProducer
             )
         //}
     }
@@ -137,6 +141,7 @@ private fun PortraitDeviceUsageScreen(
     deviceUsageResource: Resource<DeviceUsage<*>>,
     openApplicationUsageScreen: (appPackageName: String) -> Unit,
     innerPadding: PaddingValues,
+    modelProducer: CartesianChartModelProducer,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -177,6 +182,7 @@ private fun PortraitDeviceUsageScreen(
                         dayIndex = dayIndex,
                         onDayIndexChange = onDayIndexChange,
                         deviceUsage = deviceUsage,
+                        modelProducer = modelProducer,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = dimensionResource(id = R.dimen.padding_medium))
@@ -296,6 +302,7 @@ private fun TotalUsageView(
     dayIndex: Int,
     onDayIndexChange: (Int) -> Unit,
     deviceUsage: DeviceUsage<*>,
+    modelProducer: CartesianChartModelProducer,
     modifier: Modifier = Modifier
 ) {
     if(period == Period.WEEK) {
@@ -305,6 +312,7 @@ private fun TotalUsageView(
             averageTime = deviceUsage.getAverageTimeUsed(),
             timeIntervalStart = deviceUsage.timeIntervalStart,
             timeIntervalEnd = deviceUsage.timeIntervalEnd,
+            modelProducer = modelProducer,
             chartValues = deviceUsage.getChartValues(),
             dateOfLastRefresh = deviceUsage.dateOfLastRefresh,
             modifier = modifier
@@ -317,6 +325,7 @@ private fun TotalUsageView(
             totalTime = deviceUsage.getTotalTimeUsed(),
             averageTime = deviceUsage.getAverageTimeUsed(),
             timestamp = deviceUsage.timeIntervalStart,
+            modelProducer = modelProducer,
             chartValues = deviceUsage.getChartValues(),
             dateOfLastRefresh = deviceUsage.dateOfLastRefresh,
             modifier = modifier

@@ -38,14 +38,22 @@ class DeviceUsageViewModel(
 
     fun calculateWeekDeviceUsage(useCache: Boolean = true) = viewModelScope.launch(Dispatchers.Default) {
         usageUseCase.calculateWeekDeviceUsage(
-            ignoredPackages = settingsUseCase.getIgnoredPackages().first(),
+            ignoredPackages = try {
+                settingsUseCase.getIgnoredPackages().first()
+            } catch (_: Exception) {
+                emptyList()
+            },
             useCache = useCache
         )
     }
 
     fun calculateDayDeviceUsage(useCache: Boolean = true) = viewModelScope.launch(Dispatchers.Default) {
         usageUseCase.calculateDayDeviceUsage(
-            ignoredPackages = settingsUseCase.getIgnoredPackages().first(),
+            ignoredPackages = try {
+                settingsUseCase.getIgnoredPackages().first()
+            } catch (_: Exception) {
+                emptyList()
+            },
             dayIndex = dayIndexState.intValue,
             useCache = useCache
         )

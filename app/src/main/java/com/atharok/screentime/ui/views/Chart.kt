@@ -36,15 +36,14 @@ import com.patrykandpatrick.vico.core.common.component.LineComponent
 import com.patrykandpatrick.vico.core.common.component.TextComponent
 import com.patrykandpatrick.vico.core.common.data.ExtraStore
 import com.patrykandpatrick.vico.core.common.shape.CorneredShape
-import org.koin.compose.koinInject
 import kotlin.math.floor
 
 @Composable
 fun Chart(
     period: Period,
     data: Map<String, Float>,
-    modifier: Modifier = Modifier,
-    modelProducer: CartesianChartModelProducer = koinInject()
+    modelProducer: CartesianChartModelProducer,
+    modifier: Modifier = Modifier
 ) {
 
     val bottomAxisLabelListKey = remember { ExtraStore.Key<List<String>>() }

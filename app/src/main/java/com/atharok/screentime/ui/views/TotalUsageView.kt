@@ -29,6 +29,7 @@ import com.atharok.screentime.ui.components.OutlinedCard
 import com.atharok.screentime.ui.components.TextExtraLarge
 import com.atharok.screentime.ui.components.TextNormal
 import com.atharok.screentime.ui.components.TextSmall
+import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
 
 @Composable
 fun TotalUsageView(
@@ -37,6 +38,7 @@ fun TotalUsageView(
     averageTime: Long,
     timeIntervalStart: Long,
     timeIntervalEnd: Long,
+    modelProducer: CartesianChartModelProducer,
     chartValues: Map<String, Float>,
     dateOfLastRefresh: String,
     modifier: Modifier = Modifier
@@ -45,6 +47,7 @@ fun TotalUsageView(
         period = period,
         totalTime = totalTime,
         averageTime = averageTime,
+        modelProducer = modelProducer,
         chartValues = chartValues,
         dateOfLastRefresh = dateOfLastRefresh,
         modifier = modifier
@@ -65,6 +68,7 @@ fun TotalUsageView(
     totalTime: Long,
     averageTime: Long,
     timestamp: Long,
+    modelProducer: CartesianChartModelProducer,
     chartValues: Map<String, Float>,
     dateOfLastRefresh: String,
     modifier: Modifier = Modifier
@@ -73,6 +77,7 @@ fun TotalUsageView(
         period = period,
         totalTime = totalTime,
         averageTime = averageTime,
+        modelProducer = modelProducer,
         chartValues = chartValues,
         dateOfLastRefresh = dateOfLastRefresh,
         modifier = modifier
@@ -91,6 +96,7 @@ private fun TotalUsageView(
     period: Period,
     totalTime: Long,
     averageTime: Long,
+    modelProducer: CartesianChartModelProducer,
     chartValues: Map<String, Float>,
     dateOfLastRefresh: String,
     modifier: Modifier = Modifier,
@@ -116,6 +122,7 @@ private fun TotalUsageView(
                     Chart(
                         period = period,
                         data = chartValues,
+                        modelProducer = modelProducer,
                         modifier = Modifier.padding(vertical = dimensionResource(id = R.dimen.padding_large))
                     )
                 }
