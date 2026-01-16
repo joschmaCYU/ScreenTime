@@ -17,6 +17,7 @@
     <!-- Period -->
     <string name="week">周</string>
     <string name="day">日</string>
+    <string name="today">今天</string>
 
     <!-- Date - Time units -->
     <string name="day_unit">%1$s天</string>

@@ -4,5 +4,6 @@
     <locale android:name="en-US"/>
     <locale android:name="es"/>
     <locale android:name="fr"/>
+    <locale android:name="gl"/>
     <locale android:name="zh-CN"/>
 </locale-config>
