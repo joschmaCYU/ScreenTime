@@ -3,13 +3,10 @@ package com.atharok.screentime.data.repositories
 import android.content.Context
 import com.atharok.screentime.common.extensions.getApplicationIconSafety
 import com.atharok.screentime.common.extensions.getApplicationName
-import com.atharok.screentime.common.extensions.safeDivideBy
 import com.atharok.screentime.common.utils.DateTimeUtils
 import com.atharok.screentime.data.statsTracker.UsageStatsTracker
 import com.atharok.screentime.domain.entities.usage.DailyAppUsage
 import com.atharok.screentime.domain.entities.usage.DailyDeviceUsage
-import com.atharok.screentime.domain.entities.usage.GlanceTodayAppUsage
-import com.atharok.screentime.domain.entities.usage.GlanceTodayDeviceUsage
 import com.atharok.screentime.domain.entities.usage.WeeklyAppUsage
 import com.atharok.screentime.domain.entities.usage.WeeklyDeviceUsage
 import com.atharok.screentime.domain.repositories.DeviceUsageRepository
@@ -33,20 +30,23 @@ class DeviceUsageRepositoryImpl(
         timeInterval: Pair<Long, Long>,
         ignoredPackages: List<String>
     ) {
-        tracker.calculateUsageIntervalsByPackage(
-            startTimestamp = timeInterval.first,
-            endTimestamp = timeInterval.second,
-            ignoredPackages = ignoredPackages
-        )
+        val usageIntervalsByPackage: Map<String, List<Pair<Long, Long>>> = tracker
+            .calculateUsageIntervalsByPackage(
+                startTimestamp = timeInterval.first,
+                endTimestamp = timeInterval.second,
+                ignoredPackages = ignoredPackages
+            )
 
         deviceUsageCacheByDayAndHour = tracker.getDurationPerPackageByDayAndHour(
             startTimestamp = timeInterval.first,
-            endTimestamp = timeInterval.second
+            endTimestamp = timeInterval.second,
+            usageIntervalsByPackage = usageIntervalsByPackage
         )
 
         totalDeviceUsageCacheByDayAndHour = tracker.getTotalDurationByDayAndHour(
             startTimestamp = timeInterval.first,
-            endTimestamp = timeInterval.second
+            endTimestamp = timeInterval.second,
+            usageIntervalsByPackage = usageIntervalsByPackage
         )
 
         dateOfLastRefresh = DateTimeUtils.formatToFullDateTime(timeInterval.second)
@@ -99,33 +99,6 @@ class DeviceUsageRepositoryImpl(
             timeInterval = timeInterval,
             dateOfLastRefresh = dateOfLastRefresh,
             totalDeviceUsageByHour = totalDeviceUsageCacheByDayAndHour[dayTimestamp] ?: Array(24) { 0L }
-        )
-    }
-
-    override suspend fun getGlanceTodayDeviceUsage(
-        timeInterval: Pair<Long, Long>,
-        dayTimestamp: Long
-    ): GlanceTodayDeviceUsage {
-
-        val deviceUsageCacheByDayAndHourNotNull = deviceUsageCacheByDayAndHour
-            ?: throw Exception("DeviceUsageRepositoryImpl.calculateDeviceUsage() not called.")
-
-        val deviceTimedUsed: Long = totalDeviceUsageCacheByDayAndHour[dayTimestamp]?.sum() ?: 0L
-
-        return GlanceTodayDeviceUsage(
-            totalTimeUsed = deviceTimedUsed,
-            todayAppsUsage = deviceUsageCacheByDayAndHourNotNull
-                .mapValues { (key: String, value: Map<Long, Array<Long>>) ->
-                    val appTimedUsed = value[dayTimestamp]?.sum() ?: 0L
-                    GlanceTodayAppUsage(
-                        appName = context.packageManager.getApplicationName(key) ?: "",
-                        totalTimeUsed = appTimedUsed,
-                        percentUsage = appTimedUsed.safeDivideBy(deviceTimedUsed).toFloat()
-                    )
-                }
-                .map { (_: String, value: GlanceTodayAppUsage) -> value }
-                .sortedByDescending { it.totalTimeUsed }
-                .take(3)
         )
     }
 }

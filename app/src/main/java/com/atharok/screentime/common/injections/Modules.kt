@@ -11,9 +11,11 @@ import com.atharok.screentime.common.utils.KOIN_SIMPLE_DAY_FORMAT
 import com.atharok.screentime.common.utils.KOIN_SIMPLE_HOUR_FORMAT
 import com.atharok.screentime.data.dataStore.SettingsDataStore
 import com.atharok.screentime.data.repositories.DeviceUsageRepositoryImpl
+import com.atharok.screentime.data.repositories.GlanceTodayDeviceUsageRepositoryImpl
 import com.atharok.screentime.data.repositories.SettingsRepositoryImpl
 import com.atharok.screentime.data.statsTracker.UsageStatsTracker
 import com.atharok.screentime.domain.repositories.DeviceUsageRepository
+import com.atharok.screentime.domain.repositories.GlanceTodayDeviceUsageRepository
 import com.atharok.screentime.domain.repositories.SettingsRepository
 import com.atharok.screentime.domain.usecases.DeviceUsageUseCase
 import com.atharok.screentime.domain.usecases.GlanceTodayDeviceUsageUseCase
@@ -111,7 +113,7 @@ private val useCaseModule: Module = module {
 
     single {
         GlanceTodayDeviceUsageUseCase(
-            repository = get<DeviceUsageRepository>()
+            repository = get<GlanceTodayDeviceUsageRepository>()
         )
     }
 
@@ -125,6 +127,13 @@ private val useCaseModule: Module = module {
 private val repositoryModule: Module = module {
     single<DeviceUsageRepository> {
         DeviceUsageRepositoryImpl(
+            context = androidContext(),
+            tracker = get<UsageStatsTracker>()
+        )
+    }
+
+    single<GlanceTodayDeviceUsageRepository> {
+        GlanceTodayDeviceUsageRepositoryImpl(
             context = androidContext(),
             tracker = get<UsageStatsTracker>()
         )

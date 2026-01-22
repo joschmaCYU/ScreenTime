@@ -1,7 +1,6 @@
 package com.atharok.screentime.domain.repositories
 
 import com.atharok.screentime.domain.entities.usage.DailyDeviceUsage
-import com.atharok.screentime.domain.entities.usage.GlanceTodayDeviceUsage
 import com.atharok.screentime.domain.entities.usage.WeeklyDeviceUsage
 
 interface DeviceUsageRepository {
@@ -25,9 +24,4 @@ interface DeviceUsageRepository {
         timeInterval: Pair<Long, Long>,
         dayTimestamp: Long
     ): DailyDeviceUsage
-
-    suspend fun getGlanceTodayDeviceUsage(
-        timeInterval: Pair<Long, Long>,
-        dayTimestamp: Long
-    ): GlanceTodayDeviceUsage
 }

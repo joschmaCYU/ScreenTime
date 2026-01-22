@@ -43,20 +43,54 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.atharok.screentime.R
 import com.atharok.screentime.common.utils.DateTimeUtils
 import com.atharok.screentime.common.utils.GLANCE_PREFERENCES_FAILURE
 import com.atharok.screentime.common.utils.GLANCE_PREFERENCES_LOADING
 import com.atharok.screentime.common.utils.GLANCE_PREFERENCES_REFRESH_TIMESTAMP
 import com.atharok.screentime.common.utils.GLANCE_PREFERENCES_TODAY_DEVICE_USAGE
+import com.atharok.screentime.common.utils.GLANCE_TODAY_USAGE_PERIODIC_WORK_NAME
 import com.atharok.screentime.domain.entities.usage.GlanceTodayAppUsage
 import com.atharok.screentime.domain.entities.usage.GlanceTodayDeviceUsage
 import com.atharok.screentime.presentation.activities.MainActivity
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
+import java.util.concurrent.TimeUnit
 
 class TodayUsageWidgetReceiver : GlanceAppWidgetReceiver() {
+
     override val glanceAppWidget: GlanceAppWidget = TodayUsageWidget()
+
+    override fun onEnabled(context: Context?) {
+        super.onEnabled(context)
+
+        if(context != null) {
+            val work = PeriodicWorkRequestBuilder<TodayUsageComputeWorker>(
+                repeatInterval = PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS,
+                repeatIntervalTimeUnit = TimeUnit.MILLISECONDS
+            ).build()
+
+            WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+                uniqueWorkName = GLANCE_TODAY_USAGE_PERIODIC_WORK_NAME,
+                existingPeriodicWorkPolicy = ExistingPeriodicWorkPolicy.KEEP,
+                request = work
+            )
+        }
+    }
+
+    override fun onDisabled(context: Context?) {
+        super.onDisabled(context)
+
+        if(context != null) {
+            WorkManager.getInstance(context).cancelUniqueWork(
+                uniqueWorkName = GLANCE_TODAY_USAGE_PERIODIC_WORK_NAME
+            )
+        }
+    }
 }
 
 class TodayUsageWidget : GlanceAppWidget(), KoinComponent {
@@ -65,6 +99,7 @@ class TodayUsageWidget : GlanceAppWidget(), KoinComponent {
     override val stateDefinition = PreferencesGlanceStateDefinition
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
+
         provideContent {
             GlanceTheme {
                 val dimensions = TodayUsageWidgetDimensions.calculateDimensions(

@@ -30,8 +30,6 @@ class UsageStatsTracker(
         val timestamp: Long,
     )
 
-    private lateinit var usageIntervalsByPackage: Map<String, List<Pair<Long, Long>>>
-
     /**
      * Calculates the different intervals for each app.
      */
@@ -39,7 +37,7 @@ class UsageStatsTracker(
         startTimestamp: Long,
         endTimestamp: Long,
         ignoredPackages: List<String>
-    ) {
+    ): Map<String, List<Pair<Long, Long>>> {
         val usageIntervals = mutableMapOf<String, MutableList<Pair<Long, Long>>>()
 
         usageStatsManager.queryEvents(startTimestamp, endTimestamp)?.let { usageEvents: UsageEvents ->
@@ -106,7 +104,7 @@ class UsageStatsTracker(
             }
         }
 
-        this.usageIntervalsByPackage = usageIntervals
+        return usageIntervals
     }
 
     /**
@@ -114,7 +112,8 @@ class UsageStatsTracker(
      */
     suspend fun getDurationPerPackageByDayAndHour(
         startTimestamp: Long,
-        endTimestamp: Long
+        endTimestamp: Long,
+        usageIntervalsByPackage: Map<String, List<Pair<Long, Long>>>
     ): Map<String, Map<Long, Array<Long>>> {
         val durationPerPackageByDayAndHour = mutableMapOf<String, Map<Long, Array<Long>>>()
 
@@ -135,7 +134,8 @@ class UsageStatsTracker(
      */
     suspend fun getTotalDurationByDayAndHour(
         startTimestamp: Long,
-        endTimestamp: Long
+        endTimestamp: Long,
+        usageIntervalsByPackage: Map<String, List<Pair<Long, Long>>>
     ): Map<Long, Array<Long>> {
         val intervals: List<Pair<Long, Long>> = mergeOverlappingIntervals(
             intervals = usageIntervalsByPackage.values.flatMap { it }

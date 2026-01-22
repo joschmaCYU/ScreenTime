@@ -4,26 +4,16 @@ import android.content.Context
 import com.atharok.screentime.R
 import com.atharok.screentime.common.utils.DateTimeUtils
 import com.atharok.screentime.domain.entities.usage.GlanceTodayDeviceUsage
-import com.atharok.screentime.domain.repositories.DeviceUsageRepository
+import com.atharok.screentime.domain.repositories.GlanceTodayDeviceUsageRepository
 import com.atharok.screentime.domain.resources.Resource
 
-class GlanceTodayDeviceUsageUseCase(private val repository: DeviceUsageRepository) {
+class GlanceTodayDeviceUsageUseCase(private val repository: GlanceTodayDeviceUsageRepository) {
 
     // ---- Permission ----
 
     fun hasAppUsagePermission(): Boolean = repository.hasAppUsagePermission()
 
     // ---- Compute Device Usage ----
-
-    private var calculationTimestamp = System.currentTimeMillis()
-
-    private suspend fun calculateDeviceUsage(ignoredPackages: List<String>) {
-        calculationTimestamp = System.currentTimeMillis()
-        repository.calculateDeviceUsage(
-            timeInterval = DateTimeUtils.computeInterval(calculationTimestamp, 1),
-            ignoredPackages = ignoredPackages
-        )
-    }
 
     suspend fun calculateTodayDeviceUsage(
         ignoredPackages: List<String>,
@@ -37,14 +27,15 @@ class GlanceTodayDeviceUsageUseCase(private val repository: DeviceUsageRepositor
             )
         } else {
             try {
-                calculateDeviceUsage(ignoredPackages)
-
+                val calculationTimestamp = System.currentTimeMillis()
                 val dayTimestamp = DateTimeUtils.truncateToDay(calculationTimestamp)
-                val usage = repository.getGlanceTodayDeviceUsage(
+
+                val usage = repository.calculateGlanceTodayDeviceUsage(
                     timeInterval = Pair(
                         first = dayTimestamp,
                         second = calculationTimestamp
                     ),
+                    ignoredPackages = ignoredPackages,
                     dayTimestamp = dayTimestamp
                 )
 
