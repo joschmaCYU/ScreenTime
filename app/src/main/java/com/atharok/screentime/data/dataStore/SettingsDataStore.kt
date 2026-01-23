@@ -111,13 +111,19 @@ class SettingsDataStore(private val context: Context) {
         .catchException()
         .map {
             val jsonString: String? = it[ignoredPackagesKey]
-            if(jsonString == null) emptyList() else Json.decodeFromString(jsonString)
+            if(jsonString == null)
+                emptyList()
+            else
+                try { Json.decodeFromString(jsonString) } catch (_: Exception) { emptyList() }
         }
 
     suspend fun saveIgnoredPackages(ignoredPackages: List<String>) {
-        val jsonString = Json.encodeToString(ignoredPackages)
-        context.dataStore.edit {
-            it[ignoredPackagesKey] = jsonString
+        runCatching {
+            Json.encodeToString(ignoredPackages)
+        }.getOrNull()?.let { jsonString: String ->
+            context.dataStore.edit {
+                it[ignoredPackagesKey] = jsonString
+            }
         }
     }
 }

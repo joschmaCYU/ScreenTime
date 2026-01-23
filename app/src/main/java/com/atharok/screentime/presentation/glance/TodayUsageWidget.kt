@@ -110,16 +110,12 @@ class TodayUsageWidget : GlanceAppWidget(), KoinComponent {
                 val refreshTimestamp: Long = state[longPreferencesKey(GLANCE_PREFERENCES_REFRESH_TIMESTAMP)] ?: System.currentTimeMillis()
                 val loading: Boolean = state[booleanPreferencesKey(GLANCE_PREFERENCES_LOADING)] ?: false
                 val failure: String = state[stringPreferencesKey(GLANCE_PREFERENCES_FAILURE)] ?: ""
-                val todayDeviceUsageJsonString: String? = state[stringPreferencesKey(GLANCE_PREFERENCES_TODAY_DEVICE_USAGE)]
-                val todayDeviceUsage: GlanceTodayDeviceUsage? = if(todayDeviceUsageJsonString != null) {
-                    try {
-                        Json.decodeFromString(todayDeviceUsageJsonString)
-                    } catch (_: Exception) {
-                        null
+                val todayDeviceUsage: GlanceTodayDeviceUsage? =
+                    state[stringPreferencesKey(GLANCE_PREFERENCES_TODAY_DEVICE_USAGE)]?.let { jsonString ->
+                        runCatching {
+                            Json.decodeFromString<GlanceTodayDeviceUsage>(jsonString)
+                        }.getOrNull()
                     }
-                } else {
-                    null
-                }
 
                 StatelessTodayUsageView(
                     dimensions = dimensions,
