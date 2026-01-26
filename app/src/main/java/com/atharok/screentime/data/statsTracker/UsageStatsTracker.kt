@@ -43,7 +43,7 @@ class UsageStatsTracker(
         usageStatsManager.queryEvents(startTimestamp, endTimestamp)?.let { usageEvents: UsageEvents ->
 
             val resumedPackages = mutableMapOf<String, ResumedPackage>()
-            var isFirstResumedCalled = false
+            val isFirstResumedCalled = mutableMapOf<String, Boolean>()
 
             while (usageEvents.hasNextEvent()) {
                 val event = UsageEvents.Event()
@@ -62,7 +62,7 @@ class UsageStatsTracker(
                                     packageName = eventPackageName,
                                     timestamp = event.timeStamp
                                 )
-                                isFirstResumedCalled = true
+                                isFirstResumedCalled[packageClassName] = true
                             }
 
                             UsageEvents.Event.ACTIVITY_PAUSED, UsageEvents.Event.ACTIVITY_STOPPED -> {
@@ -77,11 +77,11 @@ class UsageStatsTracker(
                                     // occurred before the start timestamp passed as a function
                                     // parameter. Therefore we add the interval between the provided
                                     // start timestamp and the current PAUSED/STOPPED timestamp.
-                                    if(!isFirstResumedCalled) {
+                                    if(isFirstResumedCalled[packageClassName] != true) {
                                         usageIntervals
                                             .getOrPut(eventPackageName) { mutableListOf() }
                                             .add(startTimestamp to event.timeStamp)
-                                        isFirstResumedCalled = true
+                                        isFirstResumedCalled[packageClassName] = true
                                     }
                                 }
                             }
