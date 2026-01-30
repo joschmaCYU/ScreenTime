@@ -32,7 +32,7 @@ class GlanceTodayDeviceUsageUseCase(private val repository: GlanceTodayDeviceUsa
 
                 val usage = repository.calculateGlanceTodayDeviceUsage(
                     timeInterval = Pair(
-                        first = dayTimestamp,
+                        first = DateTimeUtils.addDaysToTimestamp(dayTimestamp, -1),
                         second = calculationTimestamp
                     ),
                     ignoredPackages = ignoredPackages,

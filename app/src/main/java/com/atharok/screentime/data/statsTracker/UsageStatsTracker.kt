@@ -43,7 +43,7 @@ class UsageStatsTracker(
         usageStatsManager.queryEvents(startTimestamp, endTimestamp)?.let { usageEvents: UsageEvents ->
 
             val resumedPackages = mutableMapOf<String, ResumedPackage>()
-            val isFirstResumedCalled = mutableMapOf<String, Boolean>()
+            //val isFirstResumedCalled = mutableMapOf<String, Boolean>()
 
             while (usageEvents.hasNextEvent()) {
                 val event = UsageEvents.Event()
@@ -62,7 +62,7 @@ class UsageStatsTracker(
                                     packageName = eventPackageName,
                                     timestamp = event.timeStamp
                                 )
-                                isFirstResumedCalled[packageClassName] = true
+                                //isFirstResumedCalled[packageClassName] = true
                             }
 
                             UsageEvents.Event.ACTIVITY_PAUSED, UsageEvents.Event.ACTIVITY_STOPPED -> {
@@ -72,7 +72,7 @@ class UsageStatsTracker(
                                         .getOrPut(eventPackageName) { mutableListOf() }
                                         .add(resumedPackage.timestamp to event.timeStamp)
                                     resumedPackages.remove(packageClassName)
-                                } ?: run {
+                                }/* ?: run {
                                     // If the first RESUMED state was not called, we assume it
                                     // occurred before the start timestamp passed as a function
                                     // parameter. Therefore we add the interval between the provided
@@ -83,7 +83,7 @@ class UsageStatsTracker(
                                             .add(startTimestamp to event.timeStamp)
                                         isFirstResumedCalled[packageClassName] = true
                                     }
-                                }
+                                }*/ // -> May cause errors, so we remove it
                             }
 
                         }
