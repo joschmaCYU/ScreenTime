@@ -7,6 +7,9 @@ import com.atharok.screentime.R
 import com.atharok.screentime.common.utils.DurationFormater
 import com.atharok.screentime.common.utils.KOIN_DATE_FORMAT
 import com.atharok.screentime.common.utils.KOIN_DATE_TIME_FORMAT
+import com.atharok.screentime.common.utils.KOIN_FULL_DATE_TIME_FORMAT
+import com.atharok.screentime.common.utils.KOIN_MEDIUM_DATE_TIME_FORMAT
+import com.atharok.screentime.common.utils.KOIN_SIMPLE_DATE_FORMAT
 import com.atharok.screentime.common.utils.KOIN_SIMPLE_DAY_FORMAT
 import com.atharok.screentime.common.utils.KOIN_SIMPLE_HOUR_FORMAT
 import com.atharok.screentime.data.dataStore.SettingsDataStore
@@ -26,6 +29,7 @@ import com.atharok.screentime.presentation.viewmodel.SettingsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import java.text.DateFormat
@@ -51,11 +55,25 @@ private val androidModule: Module = module {
 
     single { Calendar.getInstance(get<TimeZone>()) }
 
-    single<DateFormat>(named(KOIN_DATE_TIME_FORMAT)) {
+    // ---- DateFormat ----
+
+    factory<DateFormat>(named(KOIN_DATE_TIME_FORMAT)) { (dateStyle: Int, timeStyle: Int) ->
         SimpleDateFormat.getDateTimeInstance(
-            SimpleDateFormat.FULL, SimpleDateFormat.SHORT, Locale.getDefault()
+            dateStyle, timeStyle, Locale.getDefault()
         ).apply {
             timeZone = get<TimeZone>()
+        }
+    }
+
+    single<DateFormat>(named(KOIN_FULL_DATE_TIME_FORMAT)) {
+        get<DateFormat>(named(KOIN_DATE_TIME_FORMAT)) {
+            parametersOf(SimpleDateFormat.FULL, SimpleDateFormat.SHORT)
+        }
+    }
+
+    single<DateFormat>(named(KOIN_MEDIUM_DATE_TIME_FORMAT)) {
+        get<DateFormat>(named(KOIN_DATE_TIME_FORMAT)) {
+            parametersOf(SimpleDateFormat.MEDIUM, SimpleDateFormat.SHORT)
         }
     }
 
@@ -67,9 +85,17 @@ private val androidModule: Module = module {
         }
     }
 
-    single<SimpleDateFormat>(named(KOIN_SIMPLE_DAY_FORMAT)) {
-        SimpleDateFormat("EEE", Locale.getDefault()).apply {
+    // ---- SimpleDateFormat ----
+
+    factory<SimpleDateFormat>(named(KOIN_SIMPLE_DATE_FORMAT)) { (pattern: String) ->
+        SimpleDateFormat(pattern, Locale.getDefault()).apply {
             timeZone = get<TimeZone>()
+        }
+    }
+
+    single<SimpleDateFormat>(named(KOIN_SIMPLE_DAY_FORMAT)) {
+        get<SimpleDateFormat>(named(KOIN_SIMPLE_DATE_FORMAT)) {
+            parametersOf("EEE")
         }
     }
 
@@ -77,10 +103,12 @@ private val androidModule: Module = module {
         val pattern = if(android.text.format.DateFormat.is24HourFormat(androidContext())) {
             "HH'${androidContext().getString(R.string.hour_unit, "")}'"
         } else "h a"
-        SimpleDateFormat(pattern, Locale.getDefault()).apply {
-            timeZone = get<TimeZone>()
+        get<SimpleDateFormat>(named(KOIN_SIMPLE_DATE_FORMAT)) {
+            parametersOf(pattern)
         }
     }
+
+    // ---- DurationFormater ----
 
     single { DurationFormater(context = androidContext()) }
 }

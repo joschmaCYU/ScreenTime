@@ -1,8 +1,11 @@
 package com.atharok.screentime.common.utils
 
 const val KOIN_DATE_TIME_FORMAT = "koinDateTimeFormat"
+const val KOIN_FULL_DATE_TIME_FORMAT = "koinFullDateTimeFormat"
+const val KOIN_MEDIUM_DATE_TIME_FORMAT = "koinMediumDateTimeFormat"
 const val KOIN_DATE_FORMAT = "koinDateFormat"
 
+const val KOIN_SIMPLE_DATE_FORMAT = "koinSimpleDateFormat"
 const val KOIN_SIMPLE_DAY_FORMAT = "koinSimpleDayFormat"
 const val KOIN_SIMPLE_HOUR_FORMAT = "koinSimpleHourFormat"
 

@@ -9,6 +9,7 @@ import org.koin.core.qualifier.named
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 import kotlin.math.ceil
 
 object DateTimeUtils {
@@ -37,7 +38,14 @@ object DateTimeUtils {
      * - (en): Wednesday, January 1, 2025 9:30 AM
      * - (fr): Mercredi 1 janvier 2025 9:30
      */
-    fun formatToFullDateTime(timestamp: Long): String = (koin.get<DateFormat>(named(KOIN_DATE_TIME_FORMAT)).format(timestamp)).capitalizeFirstChar()
+    fun formatToFullDateTime(timestamp: Long): String = (koin.get<DateFormat>(named(KOIN_FULL_DATE_TIME_FORMAT)).format(timestamp)).capitalizeFirstChar()
+
+    /**
+     * Format example:
+     * - (en): January 1, 2025 9:30 AM
+     * - (fr): 1 janvier 2025 9:30
+     */
+    fun formatToMediumDateTime(timestamp: Long): String = (koin.get<DateFormat>(named(KOIN_MEDIUM_DATE_TIME_FORMAT)).format(timestamp)).capitalizeFirstChar()
 
     /**
      * Format example:

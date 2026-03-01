@@ -103,6 +103,7 @@ class TodayUsageWidget : GlanceAppWidget(), KoinComponent {
         provideContent {
             GlanceTheme {
                 val dimensions = TodayUsageWidgetDimensions.calculateDimensions(
+                    width = LocalSize.current.width,
                     height = LocalSize.current.height
                 )
 
@@ -204,9 +205,9 @@ class TodayUsageWidget : GlanceAppWidget(), KoinComponent {
 
                 Spacer(GlanceModifier.width(8.dp))
 
-                if(loading) {
+                if (loading) {
                     CircularProgressIndicator(
-                        modifier = GlanceModifier.size(dimensions.minIconSize),
+                        modifier = GlanceModifier.size(dimensions.iconSize),
                         color = GlanceTheme.colors.primary
                     )
                 } else {
@@ -214,17 +215,19 @@ class TodayUsageWidget : GlanceAppWidget(), KoinComponent {
                         imageProvider = ImageProvider(R.drawable.round_refresh_24),
                         contentDescription = context.getString(R.string.refresh),
                         onClick = actionRunCallback<TodayUsageActionCallback>(),
-                        modifier = GlanceModifier.size(dimensions.minIconSize),
+                        modifier = GlanceModifier.size(dimensions.iconSize),
                         backgroundColor = GlanceTheme.colors.primary,
                         contentColor = GlanceTheme.colors.onPrimary
                     )
                 }
             }
 
-            if(failure.isBlank() && todayDeviceUsage != null && dimensions.height >= 192.dp && todayDeviceUsage.todayAppsUsage.isNotEmpty()) {
+            if(failure.isBlank() &&
+                todayDeviceUsage != null &&
+                dimensions.height >= TodayUsageWidgetDimensions.WIDTH_MIN &&
+                todayDeviceUsage.todayAppsUsage.isNotEmpty()) {
 
                 todayDeviceUsage.todayAppsUsage.forEach { appUsage ->
-
                     AppUsageView(
                         dimensions = dimensions,
                         appUsage = appUsage,
@@ -235,13 +238,15 @@ class TodayUsageWidget : GlanceAppWidget(), KoinComponent {
                             )
                     )
                 }
-
             }
 
             Spacer(GlanceModifier.defaultWeight())
 
             Text(
-                text = DateTimeUtils.formatToFullDateTime(refreshTimestamp),
+                text = if(dimensions.width < TodayUsageWidgetDimensions.WIDTH_MIN)
+                    DateTimeUtils.formatToMediumDateTime(refreshTimestamp)
+                else
+                    DateTimeUtils.formatToFullDateTime(refreshTimestamp),
                 modifier = GlanceModifier.fillMaxWidth(),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurfaceVariant,
@@ -269,17 +274,18 @@ class TodayUsageWidget : GlanceAppWidget(), KoinComponent {
             ) {
                 Text(
                     text = appUsage.appName,
+                    modifier = GlanceModifier.defaultWeight(),
                     style = TextStyle(
                         color = GlanceTheme.colors.onSurface,
                         fontSize = dimensions.standardTextSp,
                         fontWeight = FontWeight.Bold,
                         fontStyle = FontStyle.Normal,
-                        textAlign = TextAlign.Start
+                        textAlign = TextAlign.Start,
                     ),
                     maxLines = 1
                 )
 
-                Spacer(GlanceModifier.defaultWeight())
+                Spacer(GlanceModifier.width(4.dp))
 
                 Text(
                     text = DateTimeUtils.formatToDuration(appUsage.totalTimeUsed),
