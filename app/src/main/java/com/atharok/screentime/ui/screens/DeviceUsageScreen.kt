@@ -41,7 +41,7 @@ import com.atharok.screentime.ui.components.TextNormalSecondary
 import com.atharok.screentime.ui.components.TextSmall
 import com.atharok.screentime.ui.views.PeriodSelector
 import com.atharok.screentime.ui.views.TotalUsageView
-import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.compose.cartesian.data.CartesianChartModelProducer
 
 @Composable
 fun DeviceUsageScreen(

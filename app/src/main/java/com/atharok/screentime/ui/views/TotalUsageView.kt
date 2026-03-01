@@ -29,7 +29,7 @@ import com.atharok.screentime.ui.components.OutlinedCard
 import com.atharok.screentime.ui.components.TextExtraLarge
 import com.atharok.screentime.ui.components.TextNormal
 import com.atharok.screentime.ui.components.TextSmall
-import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.compose.cartesian.data.CartesianChartModelProducer
 
 @Composable
 fun TotalUsageView(

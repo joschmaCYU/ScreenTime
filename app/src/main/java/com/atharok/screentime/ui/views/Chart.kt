@@ -1,11 +1,12 @@
 package com.atharok.screentime.ui.views
 
-import android.graphics.Typeface
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.atharok.screentime.common.utils.DateTimeUtils
@@ -14,28 +15,25 @@ import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisGuidelineComponent
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisLabelComponent
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisLineComponent
-import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottom
-import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStart
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberColumnCartesianLayer
 import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
 import com.patrykandpatrick.vico.compose.cartesian.rememberVicoScrollState
 import com.patrykandpatrick.vico.compose.common.ProvideVicoTheme
 import com.patrykandpatrick.vico.compose.common.component.rememberLineComponent
-import com.patrykandpatrick.vico.compose.common.fill
 import com.patrykandpatrick.vico.compose.common.vicoTheme
 import com.patrykandpatrick.vico.compose.m3.common.rememberM3VicoTheme
-import com.patrykandpatrick.vico.core.cartesian.axis.Axis
-import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
-import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
-import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
-import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
-import com.patrykandpatrick.vico.core.cartesian.data.columnSeries
-import com.patrykandpatrick.vico.core.cartesian.decoration.HorizontalLine
-import com.patrykandpatrick.vico.core.cartesian.layer.ColumnCartesianLayer
-import com.patrykandpatrick.vico.core.common.component.LineComponent
-import com.patrykandpatrick.vico.core.common.component.TextComponent
-import com.patrykandpatrick.vico.core.common.data.ExtraStore
-import com.patrykandpatrick.vico.core.common.shape.CorneredShape
+import com.patrykandpatrick.vico.compose.cartesian.axis.Axis
+import com.patrykandpatrick.vico.compose.cartesian.axis.HorizontalAxis
+import com.patrykandpatrick.vico.compose.cartesian.axis.VerticalAxis
+import com.patrykandpatrick.vico.compose.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.compose.cartesian.data.CartesianValueFormatter
+import com.patrykandpatrick.vico.compose.cartesian.data.columnSeries
+import com.patrykandpatrick.vico.compose.cartesian.decoration.HorizontalLine
+import com.patrykandpatrick.vico.compose.cartesian.layer.ColumnCartesianLayer
+import com.patrykandpatrick.vico.compose.common.Fill
+import com.patrykandpatrick.vico.compose.common.component.LineComponent
+import com.patrykandpatrick.vico.compose.common.component.TextComponent
+import com.patrykandpatrick.vico.compose.common.data.ExtraStore
 import kotlin.math.floor
 
 @Composable
@@ -100,9 +98,9 @@ private fun StatelessChart(
                     columnProvider = ColumnCartesianLayer.ColumnProvider.series(
                         vicoTheme.columnCartesianLayerColors.map { color ->
                             rememberLineComponent(
-                                fill = fill(color),
+                                fill = Fill(color),
                                 thickness = 4.dp,
-                                shape = CorneredShape.Pill
+                                shape = CircleShape
                             )
                         }
                     )
@@ -133,8 +131,8 @@ private fun StatelessChart(
                             (data.values.sum() / data.values.size).toDouble()
                         },
                         line = LineComponent(
-                            fill = fill(MaterialTheme.colorScheme.tertiary),
-                            shape = CorneredShape.Pill
+                            fill = Fill(MaterialTheme.colorScheme.tertiary),
+                            shape = CircleShape
                         )
                     )
                 )
@@ -163,22 +161,23 @@ private fun rememberBottomAxisDefault(
 
 @Composable
 private fun rememberAxisLabelComponentDefault(): TextComponent = rememberAxisLabelComponent(
-    color = MaterialTheme.colorScheme.onSurfaceVariant,
-    textSize = 12.sp,
-    typeface = Typeface.DEFAULT
+    style = TextStyle(
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        fontSize = 12.sp
+    )
 )
 
 @Composable
 private fun rememberAxisLineComponentDefault(): LineComponent = rememberAxisLineComponent(
-    fill = fill(MaterialTheme.colorScheme.outline)
+    fill = Fill(MaterialTheme.colorScheme.outline)
 )
 
 @Composable
 private fun rememberAxisTickGuidelineComponentDefault(): LineComponent = rememberAxisGuidelineComponent(
-    fill = fill(MaterialTheme.colorScheme.outline)
+    fill = Fill(MaterialTheme.colorScheme.outline)
 )
 
 @Composable
 private fun rememberAxisGuidelineComponentDefault(): LineComponent = rememberAxisGuidelineComponent(
-    fill = fill(MaterialTheme.colorScheme.outlineVariant)
+    fill = Fill(MaterialTheme.colorScheme.outlineVariant)
 )
