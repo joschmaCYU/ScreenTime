@@ -11,31 +11,32 @@ class TodayUsageWidgetDimensions {
     val height: Dp
     val padding: Dp
     val iconSize: Dp
-    val minTextSp: TextUnit
-    val standardTextSp: TextUnit
-    val screenTimeTextSp: TextUnit
+    val fontSizeLow: TextUnit
+    val fontSizeMedium: TextUnit
+    val fontSizeHigh: TextUnit
 
     private constructor(
         width: Dp,
         height: Dp,
         padding: Dp,
         iconSize: Dp,
-        minTextSp: TextUnit,
-        standardTextSp: TextUnit,
-        screenTimeTextSp: TextUnit
+        fontSizeLow: TextUnit,
+        fontSizeMedium: TextUnit,
+        fontSizeHigh: TextUnit
     ) {
         this.width = width
         this.height = height
         this.padding = padding
         this.iconSize = iconSize
-        this.minTextSp = minTextSp
-        this.standardTextSp = standardTextSp
-        this.screenTimeTextSp = screenTimeTextSp
+        this.fontSizeLow = fontSizeLow
+        this.fontSizeMedium = fontSizeMedium
+        this.fontSizeHigh = fontSizeHigh
     }
 
     companion object {
 
-        val WIDTH_MIN = 192.dp
+        val WIDTH_LIMIT = 208.dp
+        private val WIDTH_LIMIT_LOW = 180.dp
 
         fun calculateDimensions(width: Dp, height: Dp): TodayUsageWidgetDimensions {
             return when {
@@ -44,10 +45,10 @@ class TodayUsageWidgetDimensions {
                         width = width,
                         height = height,
                         padding = 12.dp,
-                        iconSize = if(width < WIDTH_MIN) 28.dp else 36.dp,
-                        minTextSp = 12.sp,
-                        standardTextSp = 14.sp,
-                        screenTimeTextSp = if(width < WIDTH_MIN) 32.sp else 36.sp
+                        iconSize = if(width < WIDTH_LIMIT) 30.dp else 36.dp,
+                        fontSizeLow = 12.sp,
+                        fontSizeMedium = 14.sp,
+                        fontSizeHigh = if(width < WIDTH_LIMIT_LOW) 24.sp else if(width < WIDTH_LIMIT) 28.sp else 36.sp
                     )
                 }
 
@@ -56,10 +57,10 @@ class TodayUsageWidgetDimensions {
                         width = width,
                         height = height,
                         padding = 10.dp,
-                        iconSize = if(width < WIDTH_MIN) 24.dp else 32.dp,
-                        minTextSp = 11.sp,
-                        standardTextSp = 13.sp,
-                        screenTimeTextSp = if(width < WIDTH_MIN) 28.sp else 32.sp
+                        iconSize = if(width < WIDTH_LIMIT) 30.dp else 32.dp,
+                        fontSizeLow = 11.sp,
+                        fontSizeMedium = 13.sp,
+                        fontSizeHigh = if(width < WIDTH_LIMIT_LOW) 24.sp else if(width < WIDTH_LIMIT) 28.sp else 32.sp
                     )
                 }
 
@@ -68,10 +69,10 @@ class TodayUsageWidgetDimensions {
                         width = width,
                         height = height,
                         padding = 12.dp,
-                        iconSize = if(width < WIDTH_MIN) 28.dp else 36.dp,
-                        minTextSp = 12.sp,
-                        standardTextSp = 14.sp,
-                        screenTimeTextSp = if(width < WIDTH_MIN) 32.sp else 36.sp
+                        iconSize = if(width < WIDTH_LIMIT) 30.dp else 36.dp,
+                        fontSizeLow = 12.sp,
+                        fontSizeMedium = 14.sp,
+                        fontSizeHigh = if(width < WIDTH_LIMIT_LOW) 24.sp else if(width < WIDTH_LIMIT) 28.sp else 36.sp
                     )
                 }
 
@@ -80,10 +81,10 @@ class TodayUsageWidgetDimensions {
                         width = width,
                         height = height,
                         padding = 10.dp,
-                        iconSize = if(width < WIDTH_MIN) 24.dp else 32.dp,
-                        minTextSp = 11.sp,
-                        standardTextSp = 13.sp,
-                        screenTimeTextSp = if(width < WIDTH_MIN) 28.sp else 32.sp
+                        iconSize = if(width < WIDTH_LIMIT) 30.dp else 32.dp,
+                        fontSizeLow = 11.sp,
+                        fontSizeMedium = 13.sp,
+                        fontSizeHigh = if(width < WIDTH_LIMIT_LOW) 24.sp else if(width < WIDTH_LIMIT) 28.sp else 32.sp
                     )
                 }
 
@@ -92,10 +93,10 @@ class TodayUsageWidgetDimensions {
                         width = width,
                         height = height,
                         padding = 8.dp,
-                        iconSize = if(width < WIDTH_MIN) 20.dp else 28.dp,
-                        minTextSp = 10.sp,
-                        standardTextSp = 12.sp,
-                        screenTimeTextSp = if(width < WIDTH_MIN) 24.sp else 28.sp
+                        iconSize = if(width < WIDTH_LIMIT) 26.dp else 28.dp,
+                        fontSizeLow = 10.sp,
+                        fontSizeMedium = 12.sp,
+                        fontSizeHigh = if(width < WIDTH_LIMIT_LOW) 24.sp else if(width < WIDTH_LIMIT) 24.sp else 28.sp
                     )
                 }
             }

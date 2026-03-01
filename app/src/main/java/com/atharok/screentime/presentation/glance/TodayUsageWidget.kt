@@ -168,7 +168,7 @@ class TodayUsageWidget : GlanceAppWidget(), KoinComponent {
                         text = context.getString(R.string.app_name),
                         style = TextStyle(
                             color = GlanceTheme.colors.onSurfaceVariant,
-                            fontSize = dimensions.minTextSp,
+                            fontSize = dimensions.fontSizeLow,
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal,
                             textAlign = TextAlign.Start
@@ -181,7 +181,7 @@ class TodayUsageWidget : GlanceAppWidget(), KoinComponent {
                             text = "${context.getString(R.string.error)}… $failure",
                             style = TextStyle(
                                 color = GlanceTheme.colors.error,
-                                fontSize = dimensions.standardTextSp,
+                                fontSize = dimensions.fontSizeMedium,
                                 fontWeight = FontWeight.Bold,
                                 fontStyle = FontStyle.Normal,
                                 textAlign = TextAlign.Start
@@ -193,7 +193,7 @@ class TodayUsageWidget : GlanceAppWidget(), KoinComponent {
                             text = DateTimeUtils.formatToDuration(todayDeviceUsage.totalTimeUsed),
                             style = TextStyle(
                                 color = GlanceTheme.colors.onSurface,
-                                fontSize = dimensions.screenTimeTextSp,
+                                fontSize = dimensions.fontSizeHigh,
                                 fontWeight = FontWeight.Bold,
                                 fontStyle = FontStyle.Normal,
                                 textAlign = TextAlign.Start
@@ -224,7 +224,7 @@ class TodayUsageWidget : GlanceAppWidget(), KoinComponent {
 
             if(failure.isBlank() &&
                 todayDeviceUsage != null &&
-                dimensions.height >= TodayUsageWidgetDimensions.WIDTH_MIN &&
+                dimensions.height >= 192.dp &&
                 todayDeviceUsage.todayAppsUsage.isNotEmpty()) {
 
                 todayDeviceUsage.todayAppsUsage.forEach { appUsage ->
@@ -243,14 +243,14 @@ class TodayUsageWidget : GlanceAppWidget(), KoinComponent {
             Spacer(GlanceModifier.defaultWeight())
 
             Text(
-                text = if(dimensions.width < TodayUsageWidgetDimensions.WIDTH_MIN)
+                text = if(dimensions.width < TodayUsageWidgetDimensions.WIDTH_LIMIT)
                     DateTimeUtils.formatToMediumDateTime(refreshTimestamp)
                 else
                     DateTimeUtils.formatToFullDateTime(refreshTimestamp),
                 modifier = GlanceModifier.fillMaxWidth(),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurfaceVariant,
-                    fontSize = dimensions.minTextSp,
+                    fontSize = dimensions.fontSizeLow,
                     fontWeight = FontWeight.Normal,
                     fontStyle = FontStyle.Normal,
                     textAlign = TextAlign.End
@@ -277,7 +277,7 @@ class TodayUsageWidget : GlanceAppWidget(), KoinComponent {
                     modifier = GlanceModifier.defaultWeight(),
                     style = TextStyle(
                         color = GlanceTheme.colors.onSurface,
-                        fontSize = dimensions.standardTextSp,
+                        fontSize = dimensions.fontSizeMedium,
                         fontWeight = FontWeight.Bold,
                         fontStyle = FontStyle.Normal,
                         textAlign = TextAlign.Start,
@@ -291,7 +291,7 @@ class TodayUsageWidget : GlanceAppWidget(), KoinComponent {
                     text = DateTimeUtils.formatToDuration(appUsage.totalTimeUsed),
                     style = TextStyle(
                         color = GlanceTheme.colors.onSurfaceVariant,
-                        fontSize = dimensions.standardTextSp,
+                        fontSize = dimensions.fontSizeMedium,
                         fontWeight = FontWeight.Normal,
                         fontStyle = FontStyle.Normal,
                         textAlign = TextAlign.End
