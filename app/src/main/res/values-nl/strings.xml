@@ -21,7 +21,7 @@
 
     <!-- Date - Time units -->
     <string name="day_unit">%1$sd</string>
-    <string name="hour_unit">%1$sh</string>
+    <string name="hour_unit">%1$su</string>
     <string name="minute_unit">%1$sm</string>
     <string name="second_unit">%1$ss</string>
 
