@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.atharok.screentime.common.extensions.getApplicationIconSafety
 import com.atharok.screentime.common.extensions.getApplicationName
 import com.atharok.screentime.domain.entities.AppInfo
 import com.atharok.screentime.domain.resources.Resource
@@ -28,7 +29,7 @@ class InstalledPackagesViewModel(): ViewModel() {
                 AppInfo(
                     name = pm.getApplicationName(it.packageName) ?: "",
                     packageName = it.packageName,
-                    icon = pm.getApplicationIcon(it.packageName)
+                    icon = pm.getApplicationIconSafety(it.packageName)
                 )
             }.sortedBy {
                 it.name
