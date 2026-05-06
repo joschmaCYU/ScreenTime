@@ -1,0 +1,130 @@
+<resources>
+    <string name="app_name">Экранное время</string>
+
+    <string name="close">Закрыть</string>
+    <string name="more">Ещё</string>
+    <string name="back">Назад</string>
+    <string name="help">Помощь</string>
+    <string name="refresh">Обновить</string>
+    <string name="previous">Назад</string>
+    <string name="next">Вперёд</string>
+
+    <string name="total_screen_time">Общее экранное время</string>
+    <string name="daily_average">В среднем за день</string>
+    <string name="hourly_average">В среднем за час</string>
+    <string name="data_updated">Обновлено: %1$s</string>
+
+    <!-- Period -->
+    <string name="week">Неделя</string>
+    <string name="day">День</string>
+    <string name="today">Сегодня</string>
+
+    <!-- Date - Time units -->
+    <string name="day_unit">%1$sд</string>
+    <string name="hour_unit">%1$sч</string>
+    <string name="minute_unit">%1$sм</string>
+    <string name="second_unit">%1$sс</string>
+
+    <!-- Error -->
+    <string name="error">Ошибка</string>
+    <string name="error_failed_to_retrieve_usage_data">Не удалось получить информацию об использовании приложений.</string>
+    <string name="error_no_usage_data_was_found_for_this_application">Информация по исполбзованию данного приложения не найдена.</string>
+
+    <!-- Loading -->
+    <string name="calculating">Подсчёт</string>
+    <string name="calculating_message">Считаем экранное время…</string>
+
+    <!-- Permission -->
+    <string name="permission">Разрешение</string>
+    <string name="access_to_usage_data">Доступ к данным об использовании приложений</string>
+    <string name="access_to_usage_data_message">Вам необходимо предоставить разрешение чтобы использовать это приложение.</string>
+    <string name="authorize">Разрешить</string>
+
+    <!-- Ignored Apps -->
+    <string name="manage_apps_to_ignore">Управление игнорируемыми приложениями</string>
+    <string name="apps_to_ignore">Игнорируемые приложения</string>
+
+    <!-- Settings -->
+    <string name="settings">Настройки</string>
+    <string name="appearance">Внешний вид</string>
+    <string name="theme">Тема</string>
+    <string name="theme_system">Системная</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Тёмная</string>
+    <string name="theme_black">Использовать полностью чёрный цвет для тёмной темы</string>
+    <string name="theme_black_oled_info">Потребляет меньше зарядки на OLED экранах</string>
+    <string name="dynamic_colors">Динамические цвета</string>
+    <string name="display">Отображение</string>
+    <string name="default_period">Период по умолчанию</string>
+    <string name="about">О приложении</string>
+    <string name="screen_time_calculation_method">Как происходит расчёт</string>
+    <string name="screen_time_calculation_method_part_1_title">Как рассчитывается экранное время?</string>
+    <string name="screen_time_calculation_method_part_1_details">Это приложение раcсчитывает экранное время основываясь на событиях открытия/закрытия приложений записываемых системой Android. Время считается только для приложений на переднем плане. Приложения запущенные в фоновом режиме не учитываются.</string>
+    <string name="screen_time_calculation_method_part_2_title">Случаи когда экранное время может был не учтено</string>
+    <string name="screen_time_calculation_method_part_2_details">- Если ОС Android не запишет событие открытия или закрытия приложения, время проведённое в приложении не будет учтено.\n\n- Если приложение удалено, Android очищает все события открытия/закрытия для этого приложения. Поэтому время проведённое в этом приложении отображаться не будет.</string>
+    <string name="screen_time_calculation_method_part_3_title">Как рассчитывается экранное время при одновременном использовании нескольких приложений на переднем плане?</string>
+    <string name="screen_time_calculation_method_part_3_details">Если несколько приложений используются одновременно на переднем плане (например, в режиме разделённого экрана), время использования каждого приложения учитывается отдельно.\n\nОднако общее экранное время считается только по фактическому времени, проведённому перед экраном, независимо от количества активных приложений.\n\nНапример, если два приложения используются одновременно в течение 40 минут, каждое из них покажет 40 минут использования, но общее экранное время останется 40 минут, а не 80.</string>
+    <string name="language">Язык</string>
+    <string name="third_party_library">Сторонние библиотеки</string>
+    <string name="website">Сайт</string>
+    <string name="source_code">Исходный код</string>
+
+    <!-- No translatable -->
+
+    <string name="empty" translatable="false" />
+
+    <!-- Third Library -->
+
+    <string name="github" translatable="false">GitHub</string>
+    <string name="apache_license_2.0" translatable="false">Apache License 2.0</string>
+    <string name="apache_license_2.0_url" translatable="false">http://www.apache.org/licenses/LICENSE-2.0</string>
+
+    <!-- Android Jetpack Libraries -->
+
+    <string name="androidx_jetpack_url" translatable="false">https://github.com/androidx/androidx</string>
+
+    <string name="androidx_core_ktx_name" translatable="false">Core KTX</string>
+    <string name="androidx_core_ktx_id" translatable="false">androidx.core:core-ktx</string>
+
+    <string name="androidx_activity_compose_name" translatable="false">Activity Compose</string>
+    <string name="androidx_activity_compose_id" translatable="false">androidx.activity:activity-compose</string>
+
+    <string name="androidx_compose_bom_name" translatable="false">Compose BOM</string>
+    <string name="androidx_compose_bom_id" translatable="false">androidx.compose:compose-bom</string>
+
+    <string name="androidx_compose_ui_name" translatable="false">Compose UI</string>
+    <string name="androidx_compose_ui_id" translatable="false">androidx.compose.ui:ui</string>
+
+    <string name="androidx_compose_ui_graphics_name" translatable="false">Compose UI Graphics</string>
+    <string name="androidx_compose_ui_graphics_id" translatable="false">androidx.compose.ui:ui-graphics</string>
+
+    <string name="androidx_compose_material3_name" translatable="false">Compose Material 3</string>
+    <string name="androidx_compose_material3_id" translatable="false">androidx.compose.material3:material3</string>
+
+    <string name="androidx_compose_material_icons_extended_name" translatable="false">Compose Material Icons Extended</string>
+    <string name="androidx_compose_material_icons_extended_id" translatable="false">androidx.compose.material:material-icons-extended</string>
+
+    <string name="androidx_lifecycle_runtime_compose_name" translatable="false">Lifecycle Runtime Compose</string>
+    <string name="androidx_lifecycle_runtime_compose_id" translatable="false">androidx.lifecycle:lifecycle-runtime-compose</string>
+
+    <string name="androidx_navigation_compose_name" translatable="false">Navigation Compose</string>
+    <string name="androidx_navigation_compose_id" translatable="false">androidx.navigation:navigation-compose</string>
+
+    <string name="androidx_data_store_preferences_name" translatable="false">DataStore Preferences</string>
+    <string name="androidx_data_store_preferences_id" translatable="false">androidx.datastore:datastore-preferences</string>
+
+    <!-- Koin Library -->
+    <string name="koin_name" translatable="false">Koin AndroidX Compose</string>
+    <string name="koin_id" translatable="false">io.insert-koin:koin-androidx-compose</string>
+    <string name="koin_url" translatable="false">https://github.com/InsertKoinIO/koin</string>
+
+    <!-- Vico Library (charts) -->
+    <string name="vico_name" translatable="false">Vico</string>
+    <string name="vico_id" translatable="false">com.patrykandpatrick.vico</string>
+    <string name="vico_url" translatable="false">https://github.com/patrykandpatrick/vico</string>
+
+    <!-- Kotlin Serialization Library -->
+    <string name="kotlin_serialization_name" translatable="false">Kotlin Serialization</string>
+    <string name="kotlin_serialization_id" translatable="false">org.jetbrains.kotlinx:kotlinx-serialization-json</string>
+    <string name="kotlin_serialization_url" translatable="false">https://github.com/Kotlin/kotlinx.serialization</string>
+</resources>
