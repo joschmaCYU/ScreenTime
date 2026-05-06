@@ -41,7 +41,7 @@
     <string name="authorize">Autoriseren</string>
 
     <!-- Ignored Apps -->
-    <string name="manage_apps_to_ignore">Behreen van te negeren apps</string>
+    <string name="manage_apps_to_ignore">Te negeren apps beheren</string>
     <string name="apps_to_ignore">Apps negeren</string>
 
     <!-- Settings -->
