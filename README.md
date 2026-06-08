@@ -24,7 +24,7 @@ Features:
 - Ability to view screen time and comparative graphs for each individual app.
 - Comparative list of screen time for each app, sorted from the most used to the least used during the chosen period.
 - Simple and modern interface.
-- Home screen widget
+- Home screen widget.
 - No ads.
 - No data collection (internet permissions disabled).
 - Open source.

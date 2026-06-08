@@ -8,6 +8,7 @@ Fonctionnalités :
 - Possibilité d’afficher le temps d’écran et les graphiques comparatifs pour chaque application individuellement.
 - Liste comparative du temps d’écran de chaque application, triée de la plus utilisée à la moins utilisée pour la période choisie.
 - Interface simple et moderne.
+- Widget pour l'écran d'accueil.
 - Aucune publicité.
 - Aucune collecte de données (permission Internet désactivée).
 - Open source.

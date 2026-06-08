@@ -8,7 +8,7 @@ Features:
 - Möglichkeit, Bildschirmzeit und Vergleichsdiagramme für jede einzelne App anzuzeigen.
 – Vergleichsliste der Bildschirmzeit für jede App, sortiert von der am häufigsten bis zur am wenigsten verwendeten App im gewählten Zeitraum.
 - Einfaches und modernes Interface.
-- Widget für den Hauptbildschirm (Home screen)
+- Widget für den Hauptbildschirm (Home screen).
 - Keine Werbung.
 - Keine Datensammlung (kein Internetzugriff).
 - Open Source.
