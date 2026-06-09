@@ -68,4 +68,6 @@
     <string name="third_party_library">第三方库</string>
     <string name="website">网站</string>
     <string name="source_code">源代码</string>
+    <string name="code_version">版本 %1$s</string>
+    <string name="unknown">未知</string>
 </resources>

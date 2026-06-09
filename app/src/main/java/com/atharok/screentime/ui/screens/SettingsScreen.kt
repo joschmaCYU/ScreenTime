@@ -40,6 +40,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atharok.screentime.R
+import com.atharok.screentime.common.extensions.getAppVersion
 import com.atharok.screentime.common.utils.SOURCE_CODE_LINK
 import com.atharok.screentime.common.utils.WEB_SITE_LINK
 import com.atharok.screentime.common.utils.isDynamicColorsAvailable
@@ -265,8 +266,7 @@ fun SettingsScreen(
                     )
             )
 
-            SettingsText(
-                text = stringResource(id = R.string.source_code),
+            Column(
                 modifier = Modifier
                     .clickable {
                         uriHandler.openUri(SOURCE_CODE_LINK)
@@ -276,7 +276,10 @@ fun SettingsScreen(
                         horizontal = horizontalPadding,
                         vertical = verticalPadding
                     )
-            )
+            ) {
+                TextNormal(text = stringResource(id = R.string.source_code))
+                TextNormalSecondary(text = stringResource(id = R.string.code_version, context.getAppVersion()))
+            }
         }
     }
 }

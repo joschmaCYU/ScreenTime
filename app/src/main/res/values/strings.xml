@@ -68,6 +68,8 @@
     <string name="third_party_library">Third-party libraries</string>
     <string name="website">Website</string>
     <string name="source_code">Source code</string>
+    <string name="code_version">Version %1$s</string>
+    <string name="unknown">unknown</string>
 
     <!-- No translatable -->
 

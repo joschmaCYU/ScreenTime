@@ -68,4 +68,6 @@
     <string name="third_party_library">Сторонние библиотеки</string>
     <string name="website">Сайт</string>
     <string name="source_code">Исходный код</string>
+    <string name="code_version">Версия %1$s</string>
+    <string name="unknown">неизвестно</string>
 </resources>
