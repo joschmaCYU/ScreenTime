@@ -27,7 +27,7 @@ import com.patrykandpatrick.vico.compose.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.compose.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.compose.cartesian.data.CartesianChartModelProducer
 import com.patrykandpatrick.vico.compose.cartesian.data.CartesianValueFormatter
-import com.patrykandpatrick.vico.compose.cartesian.data.columnSeries
+import com.patrykandpatrick.vico.compose.cartesian.data.columnModel
 import com.patrykandpatrick.vico.compose.cartesian.decoration.HorizontalLine
 import com.patrykandpatrick.vico.compose.cartesian.layer.ColumnCartesianLayer
 import com.patrykandpatrick.vico.compose.common.Fill
@@ -48,9 +48,7 @@ fun Chart(
 
     LaunchedEffect(data) {
         modelProducer.runTransaction {
-            columnSeries {
-                series(data.values)
-            }
+            columnModel { series(data.values) }
             extras {
                 it[bottomAxisLabelListKey] = data.keys.toList()
             }
