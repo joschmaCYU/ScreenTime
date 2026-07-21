@@ -114,8 +114,8 @@ class UsageStatsTracker(
         startTimestamp: Long,
         endTimestamp: Long,
         usageIntervalsByPackage: Map<String, List<Pair<Long, Long>>>
-    ): Map<String, Map<Long, Array<Long>>> {
-        val durationPerPackageByDayAndHour = mutableMapOf<String, Map<Long, Array<Long>>>()
+    ): Map<String, Map<Long, LongArray>> {
+        val durationPerPackageByDayAndHour = mutableMapOf<String, Map<Long, LongArray>>()
 
         usageIntervalsByPackage.forEach { (packageName: String, intervals: List<Pair<Long, Long>>) ->
             durationPerPackageByDayAndHour[packageName] = generateDurationMapByDayAndHour(
@@ -136,7 +136,7 @@ class UsageStatsTracker(
         startTimestamp: Long,
         endTimestamp: Long,
         usageIntervalsByPackage: Map<String, List<Pair<Long, Long>>>
-    ): Map<Long, Array<Long>> {
+    ): Map<Long, LongArray> {
         val intervals: List<Pair<Long, Long>> = mergeOverlappingIntervals(
             intervals = usageIntervalsByPackage.values.flatMap { it }
         )
@@ -198,7 +198,7 @@ class UsageStatsTracker(
         intervals: List<Pair<Long, Long>>,
         startTimestamp: Long,
         endTimestamp: Long
-    ): Map<Long, Array<Long>> {
+    ): Map<Long, LongArray> {
 
         val durationsByDayAndHour = initializeDurationsByDayAndHour(startTimestamp, endTimestamp)
 
@@ -216,7 +216,7 @@ class UsageStatsTracker(
 
                 // Add the elapsed time between the two intervals.
                 val durationToAdd = nextTimestamp - currentTimestamp
-                durationsByDayAndHour.getOrPut(dayTimestamp) { Array(24) { 0L } }[hourIndex] += durationToAdd
+                durationsByDayAndHour.getOrPut(dayTimestamp) { LongArray(24) }[hourIndex] += durationToAdd
 
                 // Move to the next duration
                 currentTimestamp = nextTimestamp
@@ -229,12 +229,12 @@ class UsageStatsTracker(
     private fun initializeDurationsByDayAndHour(
         startTimestamp: Long,
         endTimestamp: Long
-    ): MutableMap<Long, Array<Long>> {
-        val durationsByDayAndHour = mutableMapOf<Long, Array<Long>>()
+    ): MutableMap<Long, LongArray> {
+        val durationsByDayAndHour = mutableMapOf<Long, LongArray>()
 
         var currentTimestamp = DateTimeUtils.truncateToDay(startTimestamp)
         while(currentTimestamp < endTimestamp) {
-            durationsByDayAndHour[currentTimestamp] = Array(24) { 0L }
+            durationsByDayAndHour[currentTimestamp] = LongArray(24)
             currentTimestamp = DateTimeUtils.addDaysToTimestamp(currentTimestamp, 1)
         }
 

@@ -49,7 +49,7 @@ class GlanceTodayDeviceUsageRepositoryImpl(
         return GlanceTodayDeviceUsage(
             totalTimeUsed = deviceTimedUsed,
             todayAppsUsage = deviceUsageCacheByDayAndHour
-                .mapValues { (key: String, value: Map<Long, Array<Long>>) ->
+                .mapValues { (key: String, value: Map<Long, LongArray>) ->
                     val appTimedUsed = value[dayTimestamp]?.sum() ?: 0L
                     GlanceTodayAppUsage(
                         appName = context.packageManager.getApplicationName(key) ?: "",

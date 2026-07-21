@@ -22,8 +22,8 @@ class DeviceUsageRepositoryImpl(
 
     // Calculate
 
-    private var deviceUsageCacheByDayAndHour: Map<String, Map<Long, Array<Long>>>? = null
-    private var totalDeviceUsageCacheByDayAndHour: Map<Long, Array<Long>> = mapOf()
+    private var deviceUsageCacheByDayAndHour: Map<String, Map<Long, LongArray>>? = null
+    private var totalDeviceUsageCacheByDayAndHour: Map<Long, LongArray> = mapOf()
     private var dateOfLastRefresh: String = ""
 
     override suspend fun calculateDeviceUsage(
@@ -60,7 +60,7 @@ class DeviceUsageRepositoryImpl(
             ?: throw Exception("DeviceUsageRepositoryImpl.calculateDeviceUsage() not called.")
 
         return WeeklyDeviceUsage(
-            usages = deviceUsageCacheByDayAndHourNotNull.mapValues { (key: String, value: Map<Long, Array<Long>>) ->
+            usages = deviceUsageCacheByDayAndHourNotNull.mapValues { (key: String, value: Map<Long, LongArray>) ->
                 WeeklyAppUsage(
                     packageName = key,
                     appName = context.packageManager.getApplicationName(key) ?: "",
@@ -88,17 +88,17 @@ class DeviceUsageRepositoryImpl(
             ?: throw Exception("DeviceUsageRepositoryImpl.calculateDeviceUsage() not called.")
 
         return DailyDeviceUsage(
-            usages = deviceUsageCacheByDayAndHourNotNull.mapValues { (key: String, value: Map<Long, Array<Long>>) ->
+            usages = deviceUsageCacheByDayAndHourNotNull.mapValues { (key: String, value: Map<Long, LongArray>) ->
                 DailyAppUsage(
                     packageName = key,
                     appName = context.packageManager.getApplicationName(key) ?: "",
                     appIcon = context.packageManager.getApplicationIconSafety(key),
-                    durations = value[dayTimestamp] ?: Array(24) { 0L }
+                    durations = value[dayTimestamp] ?: LongArray(24)
                 )
             },
             timeInterval = timeInterval,
             dateOfLastRefresh = dateOfLastRefresh,
-            totalDeviceUsageByHour = totalDeviceUsageCacheByDayAndHour[dayTimestamp] ?: Array(24) { 0L }
+            totalDeviceUsageByHour = totalDeviceUsageCacheByDayAndHour[dayTimestamp] ?: LongArray(24)
         )
     }
 }

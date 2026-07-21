@@ -9,7 +9,7 @@ class DailyAppUsage(
     packageName: String,
     appName: String,
     appIcon: Drawable?,
-    val durations: Array<Long>
+    val durations: LongArray
 ) : AppUsage(packageName, appName, appIcon) {
 
     private val _totalTimeUsed: Long = durations.sum()

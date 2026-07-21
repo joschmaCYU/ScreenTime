@@ -9,7 +9,7 @@ class WeeklyAppUsage(
     packageName: String,
     appName: String,
     appIcon: Drawable?,
-    val durations: Map<Long, Array<Long>>
+    val durations: Map<Long, LongArray>
 ) : AppUsage(packageName, appName, appIcon) {
 
     private val _totalTimeUsed: Long = durations.values.sumOf { array -> array.sum() }
@@ -17,7 +17,7 @@ class WeeklyAppUsage(
     private val _averageTimeUsed: Long = _totalTimeUsed.safeDivideBy(durations.size).roundToLong()
 
     private val _chartValues: Map<String, Float> by lazy {
-        durations.map { (dayTimestamp: Long, hourTimestamps: Array<Long>) ->
+        durations.map { (dayTimestamp: Long, hourTimestamps: LongArray) ->
             DateTimeUtils.formatToDayOfTheWeek(dayTimestamp) to DateTimeUtils.convertToHourFloat(hourTimestamps.sum())
         }.toMap()
     }

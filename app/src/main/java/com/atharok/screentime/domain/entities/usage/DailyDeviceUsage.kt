@@ -8,7 +8,7 @@ class DailyDeviceUsage(
     usages: Map<String, DailyAppUsage>,
     timeInterval: Pair<Long, Long>,
     dateOfLastRefresh: String,
-    totalDeviceUsageByHour: Array<Long>
+    totalDeviceUsageByHour: LongArray
 ) : DeviceUsage<DailyAppUsage>(usages, timeInterval, dateOfLastRefresh) {
 
     private val _totalTimeUsed: Long = totalDeviceUsageByHour.sum()

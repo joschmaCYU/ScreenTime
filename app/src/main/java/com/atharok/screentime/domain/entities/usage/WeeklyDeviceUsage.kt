@@ -8,7 +8,7 @@ class WeeklyDeviceUsage(
     usages: Map<String, WeeklyAppUsage>,
     timeInterval: Pair<Long, Long>,
     dateOfLastRefresh: String,
-    totalDeviceUsageByDayAndHour: Map<Long, Array<Long>>
+    totalDeviceUsageByDayAndHour: Map<Long, LongArray>
 ) : DeviceUsage<WeeklyAppUsage>(usages, timeInterval, dateOfLastRefresh) {
 
     private val _totalTimeUsed: Long = totalDeviceUsageByDayAndHour.values.sumOf { it.sum() }
@@ -17,7 +17,7 @@ class WeeklyDeviceUsage(
         _totalTimeUsed.safeDivideBy(totalDeviceUsageByDayAndHour.size).roundToLong()
 
     private val _chartValues: Map<String, Float> = totalDeviceUsageByDayAndHour
-        .map { (dayTimestamp: Long, hourTimestamps: Array<Long>) ->
+        .map { (dayTimestamp: Long, hourTimestamps: LongArray) ->
             DateTimeUtils.formatToDayOfTheWeek(dayTimestamp) to DateTimeUtils.convertToHourFloat(hourTimestamps.sum())
         }.toMap()
 
