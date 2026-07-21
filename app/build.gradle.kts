@@ -7,13 +7,13 @@ plugins {
 android {
     namespace = "com.atharok.screentime"
     compileSdk {
-        version = release(36)
+        version = release(37)
     }
 
     defaultConfig {
         applicationId = "com.atharok.screentime"
         minSdk = 23
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 11
         versionName = "1.3.5"
 
@@ -59,8 +59,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     buildFeatures {
