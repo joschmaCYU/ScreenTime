@@ -77,6 +77,7 @@ object DateTimeUtils {
         return koin.get<SimpleDateFormat>(named(KOIN_SIMPLE_HOUR_FORMAT)).format(calendar.timeInMillis)
     }
 
+    fun convertToHourDouble(timestamp: Long): Double = timestamp / MILLIS_IN_A_HOUR.toDouble()
     fun convertToHourFloat(timestamp: Long): Float = timestamp / MILLIS_IN_A_HOUR.toFloat()
 
     /**

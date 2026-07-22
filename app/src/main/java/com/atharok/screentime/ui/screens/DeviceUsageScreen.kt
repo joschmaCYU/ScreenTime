@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atharok.screentime.R
 import com.atharok.screentime.common.utils.DateTimeUtils
+import com.atharok.screentime.domain.entities.CentralTendency
 import com.atharok.screentime.domain.entities.Period
 import com.atharok.screentime.domain.entities.usage.DeviceUsage
 import com.atharok.screentime.domain.resources.Resource
@@ -69,6 +70,10 @@ fun DeviceUsageScreen(
         onDayIndexChange = {
             viewModel.dayIndexState.intValue = it
         },
+        selectedCentralTendency = viewModel.selectedCentralTendency.value,
+        onSelectedCentralTendencyChange = {
+            viewModel.selectedCentralTendency.value = it
+        },
         deviceUsageResource = deviceUsageResource,
         openApplicationUsageScreen = openApplicationUsageScreen,
         openSettingsScreen = openSettingsScreen,
@@ -88,6 +93,8 @@ private fun StatelessDeviceUsageScreen(
     onPeriodChange: (Period) -> Unit,
     dayIndex: Int,
     onDayIndexChange: (Int) -> Unit,
+    selectedCentralTendency: CentralTendency,
+    onSelectedCentralTendencyChange: (CentralTendency) -> Unit,
     deviceUsageResource: Resource<DeviceUsage<*>>,
     openApplicationUsageScreen: (appPackageName: String) -> Unit,
     openSettingsScreen: () -> Unit,
@@ -123,6 +130,8 @@ private fun StatelessDeviceUsageScreen(
                 onPeriodChange = onPeriodChange,
                 dayIndex = dayIndex,
                 onDayIndexChange = onDayIndexChange,
+                selectedCentralTendency = selectedCentralTendency,
+                onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
                 deviceUsageResource = deviceUsageResource,
                 openApplicationUsageScreen = openApplicationUsageScreen,
                 innerPadding = innerPadding,
@@ -138,6 +147,8 @@ private fun PortraitDeviceUsageScreen(
     onPeriodChange: (Period) -> Unit,
     dayIndex: Int,
     onDayIndexChange: (Int) -> Unit,
+    selectedCentralTendency: CentralTendency,
+    onSelectedCentralTendencyChange: (CentralTendency) -> Unit,
     deviceUsageResource: Resource<DeviceUsage<*>>,
     openApplicationUsageScreen: (appPackageName: String) -> Unit,
     innerPadding: PaddingValues,
@@ -181,6 +192,8 @@ private fun PortraitDeviceUsageScreen(
                         period = period,
                         dayIndex = dayIndex,
                         onDayIndexChange = onDayIndexChange,
+                        selectedCentralTendency = selectedCentralTendency,
+                        onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
                         deviceUsage = deviceUsage,
                         modelProducer = modelProducer,
                         modifier = Modifier
@@ -301,6 +314,8 @@ private fun TotalUsageView(
     period: Period,
     dayIndex: Int,
     onDayIndexChange: (Int) -> Unit,
+    selectedCentralTendency: CentralTendency,
+    onSelectedCentralTendencyChange: (CentralTendency) -> Unit,
     deviceUsage: DeviceUsage<*>,
     modelProducer: CartesianChartModelProducer,
     modifier: Modifier = Modifier
@@ -310,6 +325,9 @@ private fun TotalUsageView(
             period = period,
             totalTime = deviceUsage.getTotalTimeUsed(),
             averageTime = deviceUsage.getAverageTimeUsed(),
+            medianTime = deviceUsage.getMedianTimeUsed(),
+            selectedCentralTendency = selectedCentralTendency,
+            onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
             timeIntervalStart = deviceUsage.timeIntervalStart,
             timeIntervalEnd = deviceUsage.timeIntervalEnd,
             modelProducer = modelProducer,
@@ -324,6 +342,9 @@ private fun TotalUsageView(
             period = period,
             totalTime = deviceUsage.getTotalTimeUsed(),
             averageTime = deviceUsage.getAverageTimeUsed(),
+            medianTime = deviceUsage.getMedianTimeUsed(),
+            selectedCentralTendency = selectedCentralTendency,
+            onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
             timestamp = deviceUsage.timeIntervalStart,
             modelProducer = modelProducer,
             chartValues = deviceUsage.getChartValues(),

@@ -18,6 +18,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atharok.screentime.R
+import com.atharok.screentime.domain.entities.CentralTendency
 import com.atharok.screentime.domain.entities.Period
 import com.atharok.screentime.domain.entities.usage.AppUsage
 import com.atharok.screentime.domain.entities.usage.DeviceUsage
@@ -59,6 +60,10 @@ fun ApplicationUsageScreen(
         onDayIndexChange = {
             viewModel.dayIndexState.intValue = it
         },
+        selectedCentralTendency = viewModel.selectedCentralTendency.value,
+        onSelectedCentralTendencyChange = {
+            viewModel.selectedCentralTendency.value = it
+        },
         deviceUsageResource = deviceUsageResource,
         packageName = appPackageName,
         navigateUp = navigateUp,
@@ -79,6 +84,8 @@ private fun StatelessApplicationUsageScreen(
     onPeriodChange: (Period) -> Unit,
     dayIndex: Int,
     onDayIndexChange: (Int) -> Unit,
+    selectedCentralTendency: CentralTendency,
+    onSelectedCentralTendencyChange: (CentralTendency) -> Unit,
     packageName: String,
     deviceUsageResource: Resource<DeviceUsage<*>>,
     navigateUp: () -> Unit,
@@ -136,6 +143,8 @@ private fun StatelessApplicationUsageScreen(
                         period = period,
                         dayIndex = dayIndex,
                         onDayIndexChange = onDayIndexChange,
+                        selectedCentralTendency = selectedCentralTendency,
+                        onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
                         deviceUsage = deviceUsageResource.data,
                         appUsage = deviceUsageResource.data.getAppUsage(packageName),
                         modelProducer = modelProducer,
@@ -154,6 +163,8 @@ private fun TotalUsageView(
     period: Period,
     dayIndex: Int,
     onDayIndexChange: (Int) -> Unit,
+    selectedCentralTendency: CentralTendency,
+    onSelectedCentralTendencyChange: (CentralTendency) -> Unit,
     deviceUsage: DeviceUsage<*>,
     appUsage: AppUsage,
     modelProducer: CartesianChartModelProducer,
@@ -164,6 +175,9 @@ private fun TotalUsageView(
             period = period,
             totalTime = appUsage.getTotalTimeUsed(),
             averageTime = appUsage.getAverageTimeUsed(),
+            medianTime = appUsage.getMedianTimeUsed(),
+            selectedCentralTendency = selectedCentralTendency,
+            onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
             timeIntervalStart = deviceUsage.timeIntervalStart,
             timeIntervalEnd = deviceUsage.timeIntervalEnd,
             modelProducer = modelProducer,
@@ -178,6 +192,9 @@ private fun TotalUsageView(
             period = period,
             totalTime = appUsage.getTotalTimeUsed(),
             averageTime = appUsage.getAverageTimeUsed(),
+            medianTime = appUsage.getMedianTimeUsed(),
+            selectedCentralTendency = selectedCentralTendency,
+            onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
             timestamp = deviceUsage.timeIntervalStart,
             modelProducer = modelProducer,
             chartValues = appUsage.getChartValues(),

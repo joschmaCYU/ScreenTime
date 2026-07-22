@@ -40,6 +40,7 @@ import kotlin.math.floor
 fun Chart(
     period: Period,
     data: Map<String, Float>,
+    average: Double,
     modelProducer: CartesianChartModelProducer,
     modifier: Modifier = Modifier
 ) {
@@ -57,6 +58,7 @@ fun Chart(
 
     StatelessChart(
         data = data,
+        average = average,
         bottomAxis = when(period) {
             Period.WEEK -> {
                 rememberBottomAxisDefault(
@@ -85,6 +87,7 @@ fun Chart(
 @Composable
 private fun StatelessChart(
     data: Map<String, Float>,
+    average: Double,
     bottomAxis: Axis<Axis.Position.Horizontal.Bottom>,
     modifier: Modifier,
     modelProducer: CartesianChartModelProducer
@@ -126,7 +129,8 @@ private fun StatelessChart(
                 decorations = listOf(
                     HorizontalLine(
                         y = {
-                            (data.values.sum() / data.values.size).toDouble()
+                            //(data.values.sum() / data.values.size).toDouble()
+                            average
                         },
                         line = LineComponent(
                             fill = Fill(MaterialTheme.colorScheme.tertiary),

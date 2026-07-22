@@ -12,6 +12,8 @@
     <string name="total_screen_time">Total screen time</string>
     <string name="daily_average">Daily average</string>
     <string name="hourly_average">Hourly average</string>
+    <string name="daily_median">Daily median</string>
+    <string name="hourly_median">Hourly median</string>
     <string name="data_updated">Updated: %1$s</string>
 
     <!-- Period -->

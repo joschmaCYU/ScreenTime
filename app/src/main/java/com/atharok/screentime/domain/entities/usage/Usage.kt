@@ -6,6 +6,7 @@ import com.atharok.screentime.common.extensions.safeDivideBy
 sealed class Usage {
     abstract fun getTotalTimeUsed(): Long
     abstract fun getAverageTimeUsed(): Long
+    abstract fun getMedianTimeUsed(): Long
     abstract fun getChartValues(): Map<String, Float>
 }
 
@@ -37,7 +38,8 @@ abstract class AppUsage(
 }
 
 private class EmptyAppUsage(packageName: String): AppUsage("Unknown package", packageName, null) {
-    override fun getTotalTimeUsed(): Long = 0
-    override fun getAverageTimeUsed(): Long = 0
+    override fun getTotalTimeUsed(): Long = 0L
+    override fun getAverageTimeUsed(): Long = 0L
+    override fun getMedianTimeUsed(): Long = 0L
     override fun getChartValues(): Map<String, Float> = emptyMap()
 }

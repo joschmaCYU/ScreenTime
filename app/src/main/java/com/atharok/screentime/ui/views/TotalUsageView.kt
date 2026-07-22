@@ -1,6 +1,9 @@
 package com.atharok.screentime.ui.views
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -15,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -24,7 +28,9 @@ import androidx.compose.ui.unit.dp
 import com.atharok.screentime.R
 import com.atharok.screentime.common.utils.DateTimeUtils
 import com.atharok.screentime.common.utils.NUMBER_OF_DAYS
+import com.atharok.screentime.domain.entities.CentralTendency
 import com.atharok.screentime.domain.entities.Period
+import com.atharok.screentime.ui.components.AnimatedFade
 import com.atharok.screentime.ui.components.OutlinedCard
 import com.atharok.screentime.ui.components.TextExtraLarge
 import com.atharok.screentime.ui.components.TextNormal
@@ -36,6 +42,9 @@ fun TotalUsageView(
     period: Period,
     totalTime: Long,
     averageTime: Long,
+    medianTime: Long,
+    selectedCentralTendency: CentralTendency,
+    onSelectedCentralTendencyChange: (CentralTendency) -> Unit,
     timeIntervalStart: Long,
     timeIntervalEnd: Long,
     modelProducer: CartesianChartModelProducer,
@@ -47,6 +56,9 @@ fun TotalUsageView(
         period = period,
         totalTime = totalTime,
         averageTime = averageTime,
+        medianTime = medianTime,
+        selectedCentralTendency = selectedCentralTendency,
+        onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
         modelProducer = modelProducer,
         chartValues = chartValues,
         dateOfLastRefresh = dateOfLastRefresh,
@@ -67,6 +79,9 @@ fun TotalUsageView(
     period: Period,
     totalTime: Long,
     averageTime: Long,
+    medianTime: Long,
+    selectedCentralTendency: CentralTendency,
+    onSelectedCentralTendencyChange: (CentralTendency) -> Unit,
     timestamp: Long,
     modelProducer: CartesianChartModelProducer,
     chartValues: Map<String, Float>,
@@ -77,6 +92,9 @@ fun TotalUsageView(
         period = period,
         totalTime = totalTime,
         averageTime = averageTime,
+        medianTime = medianTime,
+        selectedCentralTendency = selectedCentralTendency,
+        onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
         modelProducer = modelProducer,
         chartValues = chartValues,
         dateOfLastRefresh = dateOfLastRefresh,
@@ -96,6 +114,9 @@ private fun TotalUsageView(
     period: Period,
     totalTime: Long,
     averageTime: Long,
+    medianTime: Long,
+    selectedCentralTendency: CentralTendency,
+    onSelectedCentralTendencyChange: (CentralTendency) -> Unit,
     modelProducer: CartesianChartModelProducer,
     chartValues: Map<String, Float>,
     dateOfLastRefresh: String,
@@ -115,6 +136,9 @@ private fun TotalUsageView(
                     period = period,
                     totalTime = totalTime,
                     averageTime = averageTime,
+                    medianTime = medianTime,
+                    selectedCentralTendency = selectedCentralTendency,
+                    onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -122,6 +146,11 @@ private fun TotalUsageView(
                     Chart(
                         period = period,
                         data = chartValues,
+                        average = if(selectedCentralTendency == CentralTendency.AVERAGE){
+                            DateTimeUtils.convertToHourDouble(averageTime)
+                        } else {
+                            DateTimeUtils.convertToHourDouble(medianTime)
+                        },
                         modelProducer = modelProducer,
                         modifier = Modifier.padding(vertical = dimensionResource(id = R.dimen.padding_large))
                     )
@@ -150,6 +179,9 @@ private fun UsageView(
     period: Period,
     totalTime: Long,
     averageTime: Long,
+    medianTime: Long,
+    selectedCentralTendency: CentralTendency,
+    onSelectedCentralTendencyChange: (CentralTendency) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -165,11 +197,45 @@ private fun UsageView(
 
         VerticalDivider()
 
-        DurationView(
-            timestamp = averageTime,
-            title = stringResource(id = if(period == Period.WEEK) R.string.daily_average else R.string.hourly_average),
-            modifier = Modifier.weight(1f).padding(vertical = dimensionResource(R.dimen.padding_small))
-        )
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .padding(vertical = dimensionResource(R.dimen.padding_small)),
+            contentAlignment = Alignment.Center
+        ) {
+            AnimatedFade(selectedCentralTendency) { centralTendency ->
+                when(centralTendency) {
+                    CentralTendency.AVERAGE -> {
+                        DurationView(
+                            timestamp = averageTime,
+                            title = stringResource(id = if(period == Period.WEEK) R.string.daily_average else R.string.hourly_average),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null
+                                ) {
+                                    onSelectedCentralTendencyChange(CentralTendency.MEDIAN)
+                                }
+                        )
+                    }
+                    CentralTendency.MEDIAN -> {
+                        DurationView(
+                            timestamp = medianTime,
+                            title = stringResource(id = if(period == Period.WEEK) R.string.daily_median else R.string.hourly_median),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clickable(
+                                    interactionSource = remember { MutableInteractionSource() },
+                                    indication = null
+                                ) {
+                                    onSelectedCentralTendencyChange(CentralTendency.AVERAGE)
+                                }
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 

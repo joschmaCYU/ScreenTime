@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.atharok.screentime.common.utils.NUMBER_OF_DAYS
+import com.atharok.screentime.domain.entities.CentralTendency
 import com.atharok.screentime.domain.entities.Period
 import com.atharok.screentime.domain.entities.usage.AppUsage
 import com.atharok.screentime.domain.entities.usage.DeviceUsage
@@ -33,6 +34,8 @@ class DeviceUsageViewModel(
     val defaultPeriod: Period = runBlocking { settingsUseCase.getDefaultPeriod().first() }
     val periodState: MutableState<Period> = mutableStateOf(defaultPeriod)
     val dayIndexState: MutableIntState = mutableIntStateOf(NUMBER_OF_DAYS - 1) // We display 9 days max.
+
+    val selectedCentralTendency: MutableState<CentralTendency> = mutableStateOf(CentralTendency.AVERAGE)
 
     fun getDeviceUsageFlow(): StateFlow<Resource<DeviceUsage<out AppUsage>>> = usageUseCase.deviceUsageFlow
 
