@@ -28,12 +28,14 @@ class DeviceUsageRepositoryImpl(
 
     override suspend fun calculateDeviceUsage(
         timeInterval: Pair<Long, Long>,
+        ignoreSystemApps: Boolean,
         ignoredPackages: List<String>
     ) {
         val usageIntervalsByPackage: Map<String, List<Pair<Long, Long>>> = tracker
             .calculateUsageIntervalsByPackage(
                 startTimestamp = timeInterval.first,
                 endTimestamp = timeInterval.second,
+                ignoreSystemApps = ignoreSystemApps,
                 ignoredPackages = ignoredPackages
             )
 

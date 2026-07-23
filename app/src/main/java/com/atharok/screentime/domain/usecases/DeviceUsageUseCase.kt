@@ -21,10 +21,14 @@ class DeviceUsageUseCase(private val repository: DeviceUsageRepository) {
     private var calculationTimestamp = System.currentTimeMillis()
     private var isInitialised = false
 
-    private suspend fun calculateDeviceUsage(ignoredPackages: List<String>) {
+    private suspend fun calculateDeviceUsage(
+        ignoreSystemApps: Boolean,
+        ignoredPackages: List<String>
+    ) {
         calculationTimestamp = System.currentTimeMillis()
         repository.calculateDeviceUsage(
             timeInterval = DateTimeUtils.computeInterval(calculationTimestamp, NUMBER_OF_DAYS - 1),
+            ignoreSystemApps = ignoreSystemApps,
             ignoredPackages = ignoredPackages
         )
         isInitialised = true
@@ -40,6 +44,7 @@ class DeviceUsageUseCase(private val repository: DeviceUsageRepository) {
     private var weeklyDeviceUsageCache: WeeklyDeviceUsage? = null
 
     suspend fun calculateWeekDeviceUsage(
+        ignoreSystemApps: Boolean,
         ignoredPackages: List<String>,
         useCache: Boolean = true
     ) {
@@ -47,7 +52,7 @@ class DeviceUsageUseCase(private val repository: DeviceUsageRepository) {
 
         try {
             if(!isInitialised || !useCache) {
-                reset(ignoredPackages)
+                reset(ignoreSystemApps, ignoredPackages)
             }
 
             if(weeklyDeviceUsageCache == null) {
@@ -75,6 +80,7 @@ class DeviceUsageUseCase(private val repository: DeviceUsageRepository) {
     private val dailyDeviceUsageCache: Array<DailyDeviceUsage?> = Array(NUMBER_OF_DAYS) { null }
 
     suspend fun calculateDayDeviceUsage(
+        ignoreSystemApps: Boolean,
         ignoredPackages: List<String>,
         dayIndex: Int,
         useCache: Boolean = true
@@ -84,7 +90,7 @@ class DeviceUsageUseCase(private val repository: DeviceUsageRepository) {
 
         try {
             if(!isInitialised || !useCache) {
-                reset(ignoredPackages)
+                reset(ignoreSystemApps, ignoredPackages)
             }
 
             if(dailyDeviceUsageCache[dayIndex] == null) {
@@ -115,11 +121,14 @@ class DeviceUsageUseCase(private val repository: DeviceUsageRepository) {
 
     // ---- Reset ----
 
-    private suspend fun reset(ignoredPackages: List<String>) {
+    private suspend fun reset(
+        ignoreSystemApps: Boolean,
+        ignoredPackages: List<String>
+    ) {
         weeklyDeviceUsageCache = null
         for(i in dailyDeviceUsageCache.indices) {
             dailyDeviceUsageCache[i] = null
         }
-        calculateDeviceUsage(ignoredPackages)
+        calculateDeviceUsage(ignoreSystemApps, ignoredPackages)
     }
 }

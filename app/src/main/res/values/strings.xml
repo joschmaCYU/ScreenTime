@@ -58,6 +58,7 @@
     <string name="dynamic_colors">Dynamic colors</string>
     <string name="display">Display</string>
     <string name="default_period">Default period</string>
+    <string name="ignore_system_apps">Ignore system apps</string>
     <string name="about">About</string>
     <string name="screen_time_calculation_method">Calculation method</string>
     <string name="screen_time_calculation_method_part_1_title">How is screen time calculated?</string>

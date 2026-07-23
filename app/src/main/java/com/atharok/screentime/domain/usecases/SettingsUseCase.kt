@@ -27,6 +27,11 @@ class SettingsUseCase(private val repository: SettingsRepository) {
         repository.saveDefaultPeriod(period)
     }
 
+    fun shouldIgnoreSystemApps(): Flow<Boolean> = repository.shouldIgnoreSystemApps()
+    suspend fun saveIgnoreSystemApps(ignoreSystemApps: Boolean) {
+        repository.saveIgnoreSystemApps(ignoreSystemApps)
+    }
+
     fun getIgnoredPackages(): Flow<List<String>> = repository.getIgnoredPackages()
     suspend fun saveIgnoredPackages(ignoredPackages: List<String>) {
         repository.saveIgnoredPackages(ignoredPackages)

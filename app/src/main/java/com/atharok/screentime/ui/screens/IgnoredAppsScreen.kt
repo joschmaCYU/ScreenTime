@@ -3,6 +3,7 @@ package com.atharok.screentime.ui.screens
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +33,7 @@ import com.atharok.screentime.ui.components.ApplicationIcon
 import com.atharok.screentime.ui.components.NavigateUpAction
 import com.atharok.screentime.ui.components.TextNormal
 import com.atharok.screentime.ui.components.TextNormalSecondary
+import kotlinx.coroutines.flow.first
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -41,13 +43,12 @@ fun IgnoredAppsScreen(
     modifier: Modifier = Modifier,
     installedPackagesViewModel: InstalledPackagesViewModel = koinViewModel(),
 ) {
-
     val context = LocalContext.current
     val installedAppsResource: Resource<List<AppInfo>> by installedPackagesViewModel.installedApps.collectAsState()
     val ignoredPackages: List<String> by settingsViewModel.ignoredPackages.collectAsState(listOf())
 
     LaunchedEffect(Unit) {
-        installedPackagesViewModel.loadInstalledPackages(context)
+        installedPackagesViewModel.loadInstalledPackages(context, settingsViewModel.ignoreSystemApps.first())
     }
 
     StatelessIgnoredAppsScreen(
@@ -83,10 +84,16 @@ fun StatelessIgnoredAppsScreen(
             }
 
             is Resource.Progress -> {
-                CircularProgressIndicator()
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
             }
 
             is Resource.Success -> {
+
                 val installedApps = installedAppsResource.data
 
                 LazyColumn(

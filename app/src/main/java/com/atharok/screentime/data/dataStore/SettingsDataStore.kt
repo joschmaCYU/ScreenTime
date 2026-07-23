@@ -23,6 +23,7 @@ class SettingsDataStore(private val context: Context) {
         private const val DYNAMIC_COLORS_KEY = "material_you_key"
         private const val BLACK_COLOR_KEY = "black_color_key"
         private const val DEFAULT_PERIOD_KEY = "default_period_key"
+        private const val IGNORE_SYSTEM_APP_KEY = "ignore_system_app_key"
         private const val IGNORED_PACKAGES_KEY = "ignored_packages_key"
     }
 
@@ -30,6 +31,7 @@ class SettingsDataStore(private val context: Context) {
     private val useDynamicColorsKey = booleanPreferencesKey(DYNAMIC_COLORS_KEY)
     private val useBlackColorForDarkThemeKey = booleanPreferencesKey(BLACK_COLOR_KEY)
     private val defaultPeriodKey = stringPreferencesKey(DEFAULT_PERIOD_KEY)
+    private val ignoreSystemAppsKey = booleanPreferencesKey(IGNORE_SYSTEM_APP_KEY)
     private val ignoredPackagesKey = stringPreferencesKey(IGNORED_PACKAGES_KEY)
 
     private fun Flow<Preferences>.catchException(): Flow<Preferences> = this.catch {
@@ -102,6 +104,20 @@ class SettingsDataStore(private val context: Context) {
     suspend fun saveDefaultPeriod(period: Period) {
         context.dataStore.edit {
             it[defaultPeriodKey] = period.name
+        }
+    }
+
+    // ---- Ignore system apps ----
+
+    val ignoreSystemAppsFlow: Flow<Boolean> = context.dataStore.data
+        .catchException()
+        .map { preferences ->
+            preferences[ignoreSystemAppsKey] == true
+        }
+
+    suspend fun saveIgnoreSystemApps(ignoreSystemApps: Boolean) {
+        context.dataStore.edit {
+            it[ignoreSystemAppsKey] = ignoreSystemApps
         }
     }
 

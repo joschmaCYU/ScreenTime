@@ -13,6 +13,7 @@ interface DeviceUsageRepository {
 
     suspend fun calculateDeviceUsage(
         timeInterval: Pair<Long, Long>,
+        ignoreSystemApps: Boolean,
         ignoredPackages: List<String>
     )
 

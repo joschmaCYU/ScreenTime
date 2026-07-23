@@ -18,6 +18,7 @@ import com.atharok.screentime.domain.entities.usage.GlanceTodayDeviceUsage
 import com.atharok.screentime.domain.resources.Resource
 import com.atharok.screentime.domain.usecases.GlanceTodayDeviceUsageUseCase
 import com.atharok.screentime.domain.usecases.SettingsUseCase
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
@@ -88,6 +89,7 @@ class TodayUsageComputeWorker(
 
         val todayUsageResource: Resource<GlanceTodayDeviceUsage> =
             deviceUsageUseCase.calculateTodayDeviceUsage(
+                ignoreSystemApps = settingsUseCase.shouldIgnoreSystemApps().first(),
                 ignoredPackages = settingsUseCase.getIgnoredPackages().firstOrNull() ?: emptyList(),
                 context = applicationContext
             )

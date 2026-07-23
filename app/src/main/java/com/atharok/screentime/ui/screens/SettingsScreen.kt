@@ -86,6 +86,7 @@ fun SettingsScreen(
             val useBlackColorForDarkTheme: Boolean by settingsViewModel.useBlackColorForDarkTheme.collectAsStateWithLifecycle(initialValue = false)
             // Display
             val defaultPeriod: Period by settingsViewModel.defaultPeriod.collectAsStateWithLifecycle(initialValue = Period.DAY)
+            val ignoreSystemApps: Boolean by settingsViewModel.ignoreSystemApps.collectAsStateWithLifecycle(initialValue = false)
 
             // ---- Appearance ----
 
@@ -168,6 +169,19 @@ fun SettingsScreen(
             SettingsDefaultPeriodSelector(
                 defaultPeriod = defaultPeriod,
                 onDefaultPeriodChange = { settingsViewModel.saveDefaultPeriod(it) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = horizontalPadding,
+                        vertical = verticalPadding
+                    )
+            )
+
+            SettingsSwitch(
+                primaryText = stringResource(id = R.string.ignore_system_apps),
+                secondaryText = null,
+                checked = ignoreSystemApps,
+                onCheckedChange = { settingsViewModel.saveIgnoreSystemApps(it) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(

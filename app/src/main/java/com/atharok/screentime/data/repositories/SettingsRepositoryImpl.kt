@@ -34,6 +34,12 @@ class SettingsRepositoryImpl(
         settingsDataStore.saveDefaultPeriod(period)
     }
 
+    override fun shouldIgnoreSystemApps(): Flow<Boolean> = settingsDataStore.ignoreSystemAppsFlow
+
+    override suspend fun saveIgnoreSystemApps(ignoreSystemApps: Boolean) {
+        settingsDataStore.saveIgnoreSystemApps(ignoreSystemApps)
+    }
+
     override fun getIgnoredPackages(): Flow<List<String>> = settingsDataStore.ignoredPackagesFlow
 
     override suspend fun saveIgnoredPackages(ignoredPackages: List<String>) {

@@ -21,6 +21,7 @@ class GlanceTodayDeviceUsageRepositoryImpl(
 
     override suspend fun calculateGlanceTodayDeviceUsage(
         timeInterval: Pair<Long, Long>,
+        ignoreSystemApps: Boolean,
         ignoredPackages: List<String>,
         dayTimestamp: Long
     ): GlanceTodayDeviceUsage {
@@ -29,6 +30,7 @@ class GlanceTodayDeviceUsageRepositoryImpl(
             .calculateUsageIntervalsByPackage(
                 startTimestamp = timeInterval.first,
                 endTimestamp = timeInterval.second,
+                ignoreSystemApps = ignoreSystemApps,
                 ignoredPackages = ignoredPackages
             )
 

@@ -16,6 +16,7 @@ class GlanceTodayDeviceUsageUseCase(private val repository: GlanceTodayDeviceUsa
     // ---- Compute Device Usage ----
 
     suspend fun calculateTodayDeviceUsage(
+        ignoreSystemApps: Boolean,
         ignoredPackages: List<String>,
         context: Context
     ): Resource<GlanceTodayDeviceUsage> {
@@ -35,6 +36,7 @@ class GlanceTodayDeviceUsageUseCase(private val repository: GlanceTodayDeviceUsa
                         first = DateTimeUtils.addDaysToTimestamp(dayTimestamp, -1),
                         second = calculationTimestamp
                     ),
+                    ignoreSystemApps = ignoreSystemApps,
                     ignoredPackages = ignoredPackages,
                     dayTimestamp = dayTimestamp
                 )

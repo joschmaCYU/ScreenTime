@@ -4,6 +4,8 @@ import android.app.AppOpsManager
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import com.atharok.screentime.common.utils.DateTimeUtils
 
 class UsageStatsTracker(
@@ -25,6 +27,17 @@ class UsageStatsTracker(
 
     // ---- Usage calculation ----
 
+    private val launchableApp: Set<String> by lazy {
+        val pm = context.packageManager
+        val intent = Intent(Intent.ACTION_MAIN).apply {
+            addCategory(Intent.CATEGORY_LAUNCHER)
+        }
+
+        val resolveInfos = pm.queryIntentActivities(intent, PackageManager.MATCH_ALL)
+
+        resolveInfos.map { it.activityInfo.packageName }.toSet()
+    }
+
     private data class ResumedPackage(
         val packageName: String,
         val timestamp: Long,
@@ -36,6 +49,7 @@ class UsageStatsTracker(
     suspend fun calculateUsageIntervalsByPackage(
         startTimestamp: Long,
         endTimestamp: Long,
+        ignoreSystemApps: Boolean,
         ignoredPackages: List<String>
     ): Map<String, List<Pair<Long, Long>>> {
         val usageIntervals = mutableMapOf<String, MutableList<Pair<Long, Long>>>()
@@ -49,6 +63,8 @@ class UsageStatsTracker(
                 val event = UsageEvents.Event()
 
                 if(usageEvents.getNextEvent(event)) {
+
+                    if(ignoreSystemApps && event.packageName !in launchableApp) continue
 
                     if(ignoredPackages.contains(event.packageName)) continue
 

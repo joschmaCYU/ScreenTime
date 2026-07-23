@@ -12,6 +12,7 @@ interface GlanceTodayDeviceUsageRepository {
 
     suspend fun calculateGlanceTodayDeviceUsage(
         timeInterval: Pair<Long, Long>,
+        ignoreSystemApps: Boolean,
         ignoredPackages: List<String>,
         dayTimestamp: Long
     ): GlanceTodayDeviceUsage

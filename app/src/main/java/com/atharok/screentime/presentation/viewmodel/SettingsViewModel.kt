@@ -32,6 +32,11 @@ class SettingsViewModel(
         useCase.saveDefaultPeriod(period)
     }
 
+    val ignoreSystemApps: Flow<Boolean> get() = useCase.shouldIgnoreSystemApps()
+    fun saveIgnoreSystemApps(ignoreSystemApps: Boolean) = viewModelScope.launch {
+        useCase.saveIgnoreSystemApps(ignoreSystemApps)
+    }
+
     val ignoredPackages: Flow<List<String>> get() = useCase.getIgnoredPackages()
     fun saveIgnoredPackages(ignoredPackages: List<String>) = viewModelScope.launch {
         useCase.saveIgnoredPackages(ignoredPackages)
