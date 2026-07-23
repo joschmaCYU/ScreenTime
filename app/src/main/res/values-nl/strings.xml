@@ -68,4 +68,6 @@
     <string name="third_party_library">Bibliotheken van derden</string>
     <string name="website">Website</string>
     <string name="source_code">Broncode</string>
+    <string name="code_version">Versie %1$s</string>
+    <string name="unknown">onbekend</string>
 </resources>
