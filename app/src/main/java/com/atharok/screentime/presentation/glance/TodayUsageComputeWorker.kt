@@ -35,9 +35,13 @@ class TodayUsageComputeWorker(
 
     override suspend fun doWork(): Result {
 
-        if(!isWorking) {
-            isWorking = true
+        if(isWorking) {
+            return Result.retry()
+        }
 
+        isWorking = true
+
+        try {
             val todayUsageResource = calculateTodayDeviceUsage()
 
             GlanceAppWidgetManager(applicationContext).getGlanceIds(
@@ -77,6 +81,7 @@ class TodayUsageComputeWorker(
 
                 TodayUsageWidget().update(applicationContext, glanceId)
             }
+        } finally {
             isWorking = false
         }
 
