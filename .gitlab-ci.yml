@@ -9,7 +9,7 @@ build:
   variables:
     ANDROID_SDK_VERSION: "15859902"
     ANDROID_BUILD_TOOLS_VERSION: "37.0.0"
-    ANDROID_PLATFORM_VERSION: "android-37"
+    ANDROID_PLATFORM_VERSION: "android-37.1"
     SECURE_FILES_DOWNLOAD_PATH: "./.secure_files/"
   script:
     - apt-get update -qq && apt-get install -y wget tar unzip lib32stdc++6 lib32z1 curl bash
