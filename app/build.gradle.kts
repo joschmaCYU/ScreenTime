@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.atharok.screentime"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 37
         versionCode = 12
         versionName = "1.4.0"
