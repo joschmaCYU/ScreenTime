@@ -12,6 +12,8 @@
     <string name="total_screen_time">Totale schermtijd</string>
     <string name="daily_average">Gemiddelde per dag</string>
     <string name="hourly_average">Gemiddelde per uur</string>
+    <string name="daily_median">Mediaan per dag</string>
+    <string name="hourly_median">Mediaan per uur</string>
     <string name="data_updated">Bijgewerkt: %1$s</string>
 
     <!-- Period -->
@@ -56,6 +58,7 @@
     <string name="dynamic_colors">Dynamische kleuren</string>
     <string name="display">Weergave</string>
     <string name="default_period">Standaard periode</string>
+    <string name="ignore_system_apps">Systeem-apps negeren</string>
     <string name="about">Over</string>
     <string name="screen_time_calculation_method">Berekeningswijze</string>
     <string name="screen_time_calculation_method_part_1_title">Hoe wordt de schermtijd berekend?</string>
