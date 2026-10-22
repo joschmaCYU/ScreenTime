@@ -13,6 +13,8 @@ import com.atharok.screentime.domain.entities.usage.MonthlyAppUsage
 import com.atharok.screentime.domain.entities.usage.MonthlyDeviceUsage
 import com.atharok.screentime.domain.entities.usage.WeeklyAppUsage
 import com.atharok.screentime.domain.entities.usage.WeeklyDeviceUsage
+import com.atharok.screentime.domain.entities.usage.YearlyAppUsage
+import com.atharok.screentime.domain.entities.usage.YearlyDeviceUsage
 import com.atharok.screentime.domain.repositories.DeviceUsageRepository
 
 class DeviceUsageRepositoryImpl(

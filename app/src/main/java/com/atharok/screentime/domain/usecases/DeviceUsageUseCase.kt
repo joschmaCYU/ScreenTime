@@ -7,6 +7,7 @@ import com.atharok.screentime.domain.entities.usage.DailyDeviceUsage
 import com.atharok.screentime.domain.entities.usage.DeviceUsage
 import com.atharok.screentime.domain.entities.usage.MonthlyDeviceUsage
 import com.atharok.screentime.domain.entities.usage.WeeklyDeviceUsage
+import com.atharok.screentime.domain.entities.usage.YearlyDeviceUsage
 import com.atharok.screentime.domain.repositories.DeviceUsageRepository
 import com.atharok.screentime.domain.resources.Resource
 import kotlinx.coroutines.flow.MutableStateFlow

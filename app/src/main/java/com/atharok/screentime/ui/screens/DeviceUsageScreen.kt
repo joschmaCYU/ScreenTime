@@ -40,8 +40,10 @@ import com.atharok.screentime.ui.components.SettingsAction
 import com.atharok.screentime.ui.components.TextNormal
 import com.atharok.screentime.ui.components.TextNormalSecondary
 import com.atharok.screentime.ui.components.TextSmall
+import com.atharok.screentime.ui.views.MonthTotalUsageView
 import com.atharok.screentime.ui.views.PeriodSelector
 import com.atharok.screentime.ui.views.TotalUsageView
+import com.atharok.screentime.ui.views.YearTotalUsageView
 import com.patrykandpatrick.vico.compose.cartesian.data.CartesianChartModelProducer
 
 @Composable
@@ -394,7 +396,7 @@ private fun TotalUsageView(
             )
         }
         Period.MONTH -> {
-            TotalUsageView(
+            MonthTotalUsageView(
                 period = period,
                 monthOffset = monthOffset,
                 onMonthOffsetChange = onMonthOffsetChange,
@@ -411,7 +413,7 @@ private fun TotalUsageView(
             )
         }
         Period.YEAR -> {
-            TotalUsageView(
+            YearTotalUsageView(
                 period = period,
                 yearOffset = yearOffset,
                 onYearOffsetChange = onYearOffsetChange,

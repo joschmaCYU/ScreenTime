@@ -110,7 +110,7 @@ fun TotalUsageView(
 }
 
 @Composable
-fun TotalUsageView(
+fun MonthTotalUsageView(
     period: Period,
     monthOffset: Int,
     onMonthOffsetChange: (Int) -> Unit,
@@ -147,7 +147,7 @@ fun TotalUsageView(
 }
 
 @Composable
-fun TotalUsageView(
+fun YearTotalUsageView(
     period: Period,
     yearOffset: Int,
     onYearOffsetChange: (Int) -> Unit,

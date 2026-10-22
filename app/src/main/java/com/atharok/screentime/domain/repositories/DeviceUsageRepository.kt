@@ -4,6 +4,7 @@ import com.atharok.screentime.domain.entities.usage.AllDeviceUsage
 import com.atharok.screentime.domain.entities.usage.DailyDeviceUsage
 import com.atharok.screentime.domain.entities.usage.MonthlyDeviceUsage
 import com.atharok.screentime.domain.entities.usage.WeeklyDeviceUsage
+import com.atharok.screentime.domain.entities.usage.YearlyDeviceUsage
 
 interface DeviceUsageRepository {
 
