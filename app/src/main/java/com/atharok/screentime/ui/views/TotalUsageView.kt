@@ -110,6 +110,80 @@ fun TotalUsageView(
 }
 
 @Composable
+fun TotalUsageView(
+    period: Period,
+    monthOffset: Int,
+    onMonthOffsetChange: (Int) -> Unit,
+    totalTime: Long,
+    averageTime: Long,
+    medianTime: Long,
+    selectedCentralTendency: CentralTendency,
+    onSelectedCentralTendencyChange: (CentralTendency) -> Unit,
+    timestamp: Long,
+    modelProducer: CartesianChartModelProducer,
+    chartValues: Map<String, Float>,
+    dateOfLastRefresh: String,
+    modifier: Modifier = Modifier
+) {
+    TotalUsageView(
+        period = period,
+        totalTime = totalTime,
+        averageTime = averageTime,
+        medianTime = medianTime,
+        selectedCentralTendency = selectedCentralTendency,
+        onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
+        modelProducer = modelProducer,
+        chartValues = chartValues,
+        dateOfLastRefresh = dateOfLastRefresh,
+        modifier = modifier
+    ) {
+        MonthSelectorView(
+            monthOffset = monthOffset,
+            onMonthOffsetChange = onMonthOffsetChange,
+            timestamp = timestamp,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+fun TotalUsageView(
+    period: Period,
+    yearOffset: Int,
+    onYearOffsetChange: (Int) -> Unit,
+    totalTime: Long,
+    averageTime: Long,
+    medianTime: Long,
+    selectedCentralTendency: CentralTendency,
+    onSelectedCentralTendencyChange: (CentralTendency) -> Unit,
+    timestamp: Long,
+    modelProducer: CartesianChartModelProducer,
+    chartValues: Map<String, Float>,
+    dateOfLastRefresh: String,
+    modifier: Modifier = Modifier
+) {
+    TotalUsageView(
+        period = period,
+        totalTime = totalTime,
+        averageTime = averageTime,
+        medianTime = medianTime,
+        selectedCentralTendency = selectedCentralTendency,
+        onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
+        modelProducer = modelProducer,
+        chartValues = chartValues,
+        dateOfLastRefresh = dateOfLastRefresh,
+        modifier = modifier
+    ) {
+        YearSelectorView(
+            yearOffset = yearOffset,
+            onYearOffsetChange = onYearOffsetChange,
+            timestamp = timestamp,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
 private fun TotalUsageView(
     period: Period,
     totalTime: Long,
@@ -206,9 +280,14 @@ private fun UsageView(
             AnimatedFade(selectedCentralTendency) { centralTendency ->
                 when(centralTendency) {
                     CentralTendency.AVERAGE -> {
+                        val title = when(period) {
+                            Period.DAY -> stringResource(id = R.string.hourly_average)
+                            Period.YEAR -> stringResource(id = R.string.yearly_average)
+                            else -> stringResource(id = R.string.daily_average)
+                        }
                         DurationView(
                             timestamp = averageTime,
-                            title = stringResource(id = if(period == Period.WEEK) R.string.daily_average else R.string.hourly_average),
+                            title = title,
                             modifier = Modifier
                                 .fillMaxSize()
                                 .clickable(
@@ -220,9 +299,14 @@ private fun UsageView(
                         )
                     }
                     CentralTendency.MEDIAN -> {
+                        val title = when(period) {
+                            Period.DAY -> stringResource(id = R.string.hourly_median)
+                            Period.YEAR -> stringResource(id = R.string.yearly_median)
+                            else -> stringResource(id = R.string.daily_median)
+                        }
                         DurationView(
                             timestamp = medianTime,
-                            title = stringResource(id = if(period == Period.WEEK) R.string.daily_median else R.string.hourly_median),
+                            title = title,
                             modifier = Modifier
                                 .fillMaxSize()
                                 .clickable(
@@ -336,6 +420,96 @@ private fun DaySelectorView(
             },
             modifier = Modifier.weight(0.2f),
             enabled = dayIndex < NUMBER_OF_DAYS - 1
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+                contentDescription = stringResource(R.string.next)
+            )
+        }
+    }
+}
+
+@Composable
+private fun MonthSelectorView(
+    monthOffset: Int,
+    onMonthOffsetChange: (Int) -> Unit,
+    timestamp: Long,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.height(IntrinsicSize.Min),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(
+            onClick = {
+                onMonthOffsetChange(monthOffset - 1)
+            },
+            modifier = Modifier.weight(0.2f)
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowLeft,
+                contentDescription = stringResource(R.string.previous)
+            )
+        }
+
+        TextNormal(
+            text = DateTimeUtils.formatToMonthYear(timestamp),
+            modifier = Modifier.weight(0.6f),
+            textAlign = TextAlign.Center
+        )
+
+        IconButton(
+            onClick = {
+                onMonthOffsetChange(monthOffset + 1)
+            },
+            modifier = Modifier.weight(0.2f),
+            enabled = monthOffset < 0
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+                contentDescription = stringResource(R.string.next)
+            )
+        }
+    }
+}
+
+@Composable
+private fun YearSelectorView(
+    yearOffset: Int,
+    onYearOffsetChange: (Int) -> Unit,
+    timestamp: Long,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.height(IntrinsicSize.Min),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(
+            onClick = {
+                onYearOffsetChange(yearOffset - 1)
+            },
+            modifier = Modifier.weight(0.2f)
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowLeft,
+                contentDescription = stringResource(R.string.previous)
+            )
+        }
+
+        TextNormal(
+            text = DateTimeUtils.formatToYear(timestamp),
+            modifier = Modifier.weight(0.6f),
+            textAlign = TextAlign.Center
+        )
+
+        IconButton(
+            onClick = {
+                onYearOffsetChange(yearOffset + 1)
+            },
+            modifier = Modifier.weight(0.2f),
+            enabled = yearOffset < 0
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,

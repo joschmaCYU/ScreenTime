@@ -44,10 +44,18 @@ fun ApplicationUsageScreen(
 ) {
     val deviceUsageResource: Resource<DeviceUsage<*>> by viewModel.getDeviceUsageFlow().collectAsStateWithLifecycle()
 
-    LaunchedEffect(viewModel.periodState.value, viewModel.dayIndexState.intValue) {
+    LaunchedEffect(
+        viewModel.periodState.value,
+        viewModel.dayIndexState.intValue,
+        viewModel.monthOffsetState.intValue,
+        viewModel.yearOffsetState.intValue
+    ) {
         when(viewModel.periodState.value) {
-            Period.WEEK -> viewModel.calculateWeekDeviceUsage(true)
             Period.DAY -> viewModel.calculateDayDeviceUsage(true)
+            Period.WEEK -> viewModel.calculateWeekDeviceUsage(true)
+            Period.MONTH -> viewModel.calculateMonthDeviceUsage(true)
+            Period.YEAR -> viewModel.calculateYearDeviceUsage(true)
+            Period.ALL -> viewModel.calculateAllDeviceUsage(true)
         }
     }
 
@@ -60,6 +68,14 @@ fun ApplicationUsageScreen(
         onDayIndexChange = {
             viewModel.dayIndexState.intValue = it
         },
+        monthOffset = viewModel.monthOffsetState.intValue,
+        onMonthOffsetChange = {
+            viewModel.monthOffsetState.intValue = it
+        },
+        yearOffset = viewModel.yearOffsetState.intValue,
+        onYearOffsetChange = {
+            viewModel.yearOffsetState.intValue = it
+        },
         selectedCentralTendency = viewModel.selectedCentralTendency.value,
         onSelectedCentralTendencyChange = {
             viewModel.selectedCentralTendency.value = it
@@ -70,8 +86,11 @@ fun ApplicationUsageScreen(
         openSettingsScreen = openSettingsScreen,
         refresh = {
             when(it) {
-                Period.WEEK -> viewModel.calculateWeekDeviceUsage(false)
                 Period.DAY -> viewModel.calculateDayDeviceUsage(false)
+                Period.WEEK -> viewModel.calculateWeekDeviceUsage(false)
+                Period.MONTH -> viewModel.calculateMonthDeviceUsage(false)
+                Period.YEAR -> viewModel.calculateYearDeviceUsage(false)
+                Period.ALL -> viewModel.calculateAllDeviceUsage(false)
             }
         },
         modifier = modifier
@@ -84,6 +103,10 @@ private fun StatelessApplicationUsageScreen(
     onPeriodChange: (Period) -> Unit,
     dayIndex: Int,
     onDayIndexChange: (Int) -> Unit,
+    monthOffset: Int,
+    onMonthOffsetChange: (Int) -> Unit,
+    yearOffset: Int,
+    onYearOffsetChange: (Int) -> Unit,
     selectedCentralTendency: CentralTendency,
     onSelectedCentralTendencyChange: (CentralTendency) -> Unit,
     packageName: String,
@@ -143,6 +166,10 @@ private fun StatelessApplicationUsageScreen(
                         period = period,
                         dayIndex = dayIndex,
                         onDayIndexChange = onDayIndexChange,
+                        monthOffset = monthOffset,
+                        onMonthOffsetChange = onMonthOffsetChange,
+                        yearOffset = yearOffset,
+                        onYearOffsetChange = onYearOffsetChange,
                         selectedCentralTendency = selectedCentralTendency,
                         onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
                         deviceUsage = deviceUsageResource.data,
@@ -163,6 +190,10 @@ private fun TotalUsageView(
     period: Period,
     dayIndex: Int,
     onDayIndexChange: (Int) -> Unit,
+    monthOffset: Int,
+    onMonthOffsetChange: (Int) -> Unit,
+    yearOffset: Int,
+    onYearOffsetChange: (Int) -> Unit,
     selectedCentralTendency: CentralTendency,
     onSelectedCentralTendencyChange: (CentralTendency) -> Unit,
     deviceUsage: DeviceUsage<*>,
@@ -170,37 +201,90 @@ private fun TotalUsageView(
     modelProducer: CartesianChartModelProducer,
     modifier: Modifier = Modifier
 ) {
-    if(period == Period.WEEK) {
-        TotalUsageView(
-            period = period,
-            totalTime = appUsage.getTotalTimeUsed(),
-            averageTime = appUsage.getAverageTimeUsed(),
-            medianTime = appUsage.getMedianTimeUsed(),
-            selectedCentralTendency = selectedCentralTendency,
-            onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
-            timeIntervalStart = deviceUsage.timeIntervalStart,
-            timeIntervalEnd = deviceUsage.timeIntervalEnd,
-            modelProducer = modelProducer,
-            chartValues = appUsage.getChartValues(),
-            dateOfLastRefresh = deviceUsage.dateOfLastRefresh,
-            modifier = modifier
-        )
-    } else {
-        TotalUsageView(
-            dayIndex = dayIndex,
-            onDayIndexChange = onDayIndexChange,
-            period = period,
-            totalTime = appUsage.getTotalTimeUsed(),
-            averageTime = appUsage.getAverageTimeUsed(),
-            medianTime = appUsage.getMedianTimeUsed(),
-            selectedCentralTendency = selectedCentralTendency,
-            onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
-            timestamp = deviceUsage.timeIntervalStart,
-            modelProducer = modelProducer,
-            chartValues = appUsage.getChartValues(),
-            dateOfLastRefresh = deviceUsage.dateOfLastRefresh,
-            modifier = modifier
-        )
+    when(period) {
+        Period.DAY -> {
+            TotalUsageView(
+                dayIndex = dayIndex,
+                onDayIndexChange = onDayIndexChange,
+                period = period,
+                totalTime = appUsage.getTotalTimeUsed(),
+                averageTime = appUsage.getAverageTimeUsed(),
+                medianTime = appUsage.getMedianTimeUsed(),
+                selectedCentralTendency = selectedCentralTendency,
+                onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
+                timestamp = deviceUsage.timeIntervalStart,
+                modelProducer = modelProducer,
+                chartValues = appUsage.getChartValues(),
+                dateOfLastRefresh = deviceUsage.dateOfLastRefresh,
+                modifier = modifier
+            )
+        }
+        Period.WEEK -> {
+            TotalUsageView(
+                period = period,
+                totalTime = appUsage.getTotalTimeUsed(),
+                averageTime = appUsage.getAverageTimeUsed(),
+                medianTime = appUsage.getMedianTimeUsed(),
+                selectedCentralTendency = selectedCentralTendency,
+                onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
+                timeIntervalStart = deviceUsage.timeIntervalStart,
+                timeIntervalEnd = deviceUsage.timeIntervalEnd,
+                modelProducer = modelProducer,
+                chartValues = appUsage.getChartValues(),
+                dateOfLastRefresh = deviceUsage.dateOfLastRefresh,
+                modifier = modifier
+            )
+        }
+        Period.MONTH -> {
+            TotalUsageView(
+                period = period,
+                monthOffset = monthOffset,
+                onMonthOffsetChange = onMonthOffsetChange,
+                totalTime = appUsage.getTotalTimeUsed(),
+                averageTime = appUsage.getAverageTimeUsed(),
+                medianTime = appUsage.getMedianTimeUsed(),
+                selectedCentralTendency = selectedCentralTendency,
+                onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
+                timestamp = deviceUsage.timeIntervalStart,
+                modelProducer = modelProducer,
+                chartValues = appUsage.getChartValues(),
+                dateOfLastRefresh = deviceUsage.dateOfLastRefresh,
+                modifier = modifier
+            )
+        }
+        Period.YEAR -> {
+            TotalUsageView(
+                period = period,
+                yearOffset = yearOffset,
+                onYearOffsetChange = onYearOffsetChange,
+                totalTime = appUsage.getTotalTimeUsed(),
+                averageTime = appUsage.getAverageTimeUsed(),
+                medianTime = appUsage.getMedianTimeUsed(),
+                selectedCentralTendency = selectedCentralTendency,
+                onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
+                timestamp = deviceUsage.timeIntervalStart,
+                modelProducer = modelProducer,
+                chartValues = appUsage.getChartValues(),
+                dateOfLastRefresh = deviceUsage.dateOfLastRefresh,
+                modifier = modifier
+            )
+        }
+        Period.ALL -> {
+            TotalUsageView(
+                period = period,
+                totalTime = appUsage.getTotalTimeUsed(),
+                averageTime = appUsage.getAverageTimeUsed(),
+                medianTime = appUsage.getMedianTimeUsed(),
+                selectedCentralTendency = selectedCentralTendency,
+                onSelectedCentralTendencyChange = onSelectedCentralTendencyChange,
+                timeIntervalStart = deviceUsage.timeIntervalStart,
+                timeIntervalEnd = deviceUsage.timeIntervalEnd,
+                modelProducer = modelProducer,
+                chartValues = appUsage.getChartValues(),
+                dateOfLastRefresh = deviceUsage.dateOfLastRefresh,
+                modifier = modifier
+            )
+        }
     }
 }
 

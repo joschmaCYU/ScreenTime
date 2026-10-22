@@ -1,6 +1,8 @@
 package com.atharok.screentime.domain.repositories
 
+import com.atharok.screentime.domain.entities.usage.AllDeviceUsage
 import com.atharok.screentime.domain.entities.usage.DailyDeviceUsage
+import com.atharok.screentime.domain.entities.usage.MonthlyDeviceUsage
 import com.atharok.screentime.domain.entities.usage.WeeklyDeviceUsage
 
 interface DeviceUsageRepository {
@@ -25,4 +27,21 @@ interface DeviceUsageRepository {
         timeInterval: Pair<Long, Long>,
         dayTimestamp: Long
     ): DailyDeviceUsage
+
+    suspend fun getMonthDeviceUsage(
+        timeInterval: Pair<Long, Long>,
+        ignoreSystemApps: Boolean,
+        ignoredPackages: List<String>
+    ): MonthlyDeviceUsage
+
+    suspend fun getYearDeviceUsage(
+        timeInterval: Pair<Long, Long>,
+        ignoreSystemApps: Boolean,
+        ignoredPackages: List<String>
+    ): YearlyDeviceUsage
+
+    suspend fun getAllDeviceUsage(
+        ignoreSystemApps: Boolean,
+        ignoredPackages: List<String>
+    ): AllDeviceUsage
 }

@@ -78,6 +78,33 @@ fun Chart(
                     itemPlacer = HorizontalAxis.ItemPlacer.aligned(spacing = { 4 }, addExtremeLabelPadding = true)
                 )
             }
+            Period.MONTH -> {
+                rememberBottomAxisDefault(
+                    valueFormatter = remember{{ cartesianMeasuringContext, x, _  ->
+                        val xInt: Int = x.toInt()
+                        cartesianMeasuringContext.model.extraStore.getOrNull(bottomAxisLabelListKey)?.getOrNull(xInt) ?: "$xInt"
+                    }},
+                    itemPlacer = HorizontalAxis.ItemPlacer.aligned(spacing = { 5 }, addExtremeLabelPadding = true)
+                )
+            }
+            Period.YEAR -> {
+                rememberBottomAxisDefault(
+                    valueFormatter = remember{{ cartesianMeasuringContext, x, _  ->
+                        val xInt: Int = x.toInt()
+                        cartesianMeasuringContext.model.extraStore.getOrNull(bottomAxisLabelListKey)?.getOrNull(xInt) ?: "$xInt"
+                    }},
+                    itemPlacer = HorizontalAxis.ItemPlacer.aligned(spacing = { 2 }, addExtremeLabelPadding = true)
+                )
+            }
+            Period.ALL -> {
+                rememberBottomAxisDefault(
+                    valueFormatter = remember{{ cartesianMeasuringContext, x, _  ->
+                        val xInt: Int = x.toInt()
+                        cartesianMeasuringContext.model.extraStore.getOrNull(bottomAxisLabelListKey)?.getOrNull(xInt) ?: "$xInt"
+                    }},
+                    itemPlacer = HorizontalAxis.ItemPlacer.aligned(spacing = { 1 }, addExtremeLabelPadding = true)
+                )
+            }
         },
         modifier = modifier,
         modelProducer = modelProducer

@@ -34,6 +34,8 @@ class DeviceUsageViewModel(
     val defaultPeriod: Period = runBlocking { settingsUseCase.getDefaultPeriod().first() }
     val periodState: MutableState<Period> = mutableStateOf(defaultPeriod)
     val dayIndexState: MutableIntState = mutableIntStateOf(NUMBER_OF_DAYS - 1) // We display 9 days max.
+    val monthOffsetState: MutableIntState = mutableIntStateOf(0)
+    val yearOffsetState: MutableIntState = mutableIntStateOf(0)
 
     val selectedCentralTendency: MutableState<CentralTendency> = mutableStateOf(CentralTendency.AVERAGE)
 
@@ -60,6 +62,44 @@ class DeviceUsageViewModel(
                 emptyList()
             },
             dayIndex = dayIndexState.intValue,
+            useCache = useCache
+        )
+    }
+
+    fun calculateMonthDeviceUsage(useCache: Boolean = true) = viewModelScope.launch(Dispatchers.Default) {
+        usageUseCase.calculateMonthDeviceUsage(
+            ignoreSystemApps = settingsUseCase.shouldIgnoreSystemApps().first(),
+            ignoredPackages = try {
+                settingsUseCase.getIgnoredPackages().first()
+            } catch (_: Exception) {
+                emptyList()
+            },
+            monthOffset = monthOffsetState.intValue,
+            useCache = useCache
+        )
+    }
+
+    fun calculateYearDeviceUsage(useCache: Boolean = true) = viewModelScope.launch(Dispatchers.Default) {
+        usageUseCase.calculateYearDeviceUsage(
+            ignoreSystemApps = settingsUseCase.shouldIgnoreSystemApps().first(),
+            ignoredPackages = try {
+                settingsUseCase.getIgnoredPackages().first()
+            } catch (_: Exception) {
+                emptyList()
+            },
+            yearOffset = yearOffsetState.intValue,
+            useCache = useCache
+        )
+    }
+
+    fun calculateAllDeviceUsage(useCache: Boolean = true) = viewModelScope.launch(Dispatchers.Default) {
+        usageUseCase.calculateAllDeviceUsage(
+            ignoreSystemApps = settingsUseCase.shouldIgnoreSystemApps().first(),
+            ignoredPackages = try {
+                settingsUseCase.getIgnoredPackages().first()
+            } catch (_: Exception) {
+                emptyList()
+            },
             useCache = useCache
         )
     }

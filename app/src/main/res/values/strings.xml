@@ -14,12 +14,20 @@
     <string name="hourly_average">Hourly average</string>
     <string name="daily_median">Daily median</string>
     <string name="hourly_median">Hourly median</string>
+    <string name="monthly_average">Daily average</string>
+    <string name="yearly_average">Monthly average</string>
+    <string name="monthly_median">Daily median</string>
+    <string name="yearly_median">Monthly median</string>
     <string name="data_updated">Updated: %1$s</string>
 
     <!-- Period -->
+    <string name="all">All</string>
+    <string name="year">Year</string>
+    <string name="month">Month</string>
     <string name="week">Week</string>
     <string name="day">Day</string>
     <string name="today">Today</string>
+    <string name="all_time">All time</string>
 
     <!-- Date - Time units -->
     <string name="day_unit">%1$sd</string>

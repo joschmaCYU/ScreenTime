@@ -60,6 +60,19 @@ object DateTimeUtils {
      */
     fun formatToDayOfTheWeek(timestamp: Long): String = koin.get<SimpleDateFormat>(named(KOIN_SIMPLE_DAY_FORMAT)).format(timestamp).capitalizeFirstChar()
 
+    fun formatToMonthYear(timestamp: Long): String =
+        SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(timestamp).capitalizeFirstChar()
+
+    fun formatToYear(timestamp: Long): String =
+        SimpleDateFormat("yyyy", Locale.getDefault()).format(timestamp)
+
+    fun formatToMonthShort(timestamp: Long): String =
+        SimpleDateFormat("MMM", Locale.getDefault()).format(timestamp).capitalizeFirstChar()
+
+    fun formatToDayOfMonth(timestamp: Long): String = calendar.apply {
+        timeInMillis = timestamp
+    }.get(Calendar.DAY_OF_MONTH).toString()
+
     /**
      * Format example:
      * - (en): 12 AM | 4 AM | 8 AM | 12 PM | 4 PM | 8 PM
@@ -113,6 +126,19 @@ object DateTimeUtils {
         this.setTime(0, 0, 0, 0)
     }.timeInMillis
 
+    fun truncateToMonth(timestamp: Long): Long = calendar.apply {
+        this.timeInMillis = timestamp
+        this.set(Calendar.DAY_OF_MONTH, 1)
+        this.setTime(0, 0, 0, 0)
+    }.timeInMillis
+
+    fun truncateToYear(timestamp: Long): Long = calendar.apply {
+        this.timeInMillis = timestamp
+        this.set(Calendar.MONTH, Calendar.JANUARY)
+        this.set(Calendar.DAY_OF_MONTH, 1)
+        this.setTime(0, 0, 0, 0)
+    }.timeInMillis
+
     /**
      * Example:
      * 1735742198000 (Wednesday 1 January 2025 14:36:38) -> 1735743600000 (Wednesday 1 January 2025 15:00:00)
@@ -158,6 +184,39 @@ object DateTimeUtils {
         val periodEnd = calendar.timeInMillis - 1
         calendar.add(Calendar.DATE, -7)
         val periodBegin = calendar.timeInMillis
+
+        return Pair(periodBegin, periodEnd)
+    }
+
+    fun computeMonthInterval(now: Long, monthOffset: Int): Pair<Long, Long> {
+        calendar.timeInMillis = now
+        if (monthOffset != 0) {
+            calendar.add(Calendar.MONTH, monthOffset)
+        }
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        calendar.setTime(0, 0, 0, 0)
+        val periodBegin = calendar.timeInMillis
+        val maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+        calendar.set(Calendar.DAY_OF_MONTH, maxDay)
+        calendar.setTime(23, 59, 59, 999)
+        val periodEnd = calendar.timeInMillis
+
+        return Pair(periodBegin, periodEnd)
+    }
+
+    fun computeYearInterval(now: Long, yearOffset: Int): Pair<Long, Long> {
+        calendar.timeInMillis = now
+        if (yearOffset != 0) {
+            calendar.add(Calendar.YEAR, yearOffset)
+        }
+        calendar.set(Calendar.MONTH, Calendar.JANUARY)
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        calendar.setTime(0, 0, 0, 0)
+        val periodBegin = calendar.timeInMillis
+        calendar.set(Calendar.MONTH, Calendar.DECEMBER)
+        calendar.set(Calendar.DAY_OF_MONTH, 31)
+        calendar.setTime(23, 59, 59, 999)
+        val periodEnd = calendar.timeInMillis
 
         return Pair(periodBegin, periodEnd)
     }

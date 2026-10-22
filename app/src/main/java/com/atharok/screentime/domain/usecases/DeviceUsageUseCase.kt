@@ -2,8 +2,10 @@ package com.atharok.screentime.domain.usecases
 
 import com.atharok.screentime.common.utils.DateTimeUtils
 import com.atharok.screentime.common.utils.NUMBER_OF_DAYS
+import com.atharok.screentime.domain.entities.usage.AllDeviceUsage
 import com.atharok.screentime.domain.entities.usage.DailyDeviceUsage
 import com.atharok.screentime.domain.entities.usage.DeviceUsage
+import com.atharok.screentime.domain.entities.usage.MonthlyDeviceUsage
 import com.atharok.screentime.domain.entities.usage.WeeklyDeviceUsage
 import com.atharok.screentime.domain.repositories.DeviceUsageRepository
 import com.atharok.screentime.domain.resources.Resource
@@ -119,6 +121,121 @@ class DeviceUsageUseCase(private val repository: DeviceUsageRepository) {
         }
     }
 
+    // ---- Month ----
+
+    private val monthlyDeviceUsageCache: MutableMap<Int, MonthlyDeviceUsage> = mutableMapOf()
+
+    suspend fun calculateMonthDeviceUsage(
+        ignoreSystemApps: Boolean,
+        ignoredPackages: List<String>,
+        monthOffset: Int,
+        useCache: Boolean = true
+    ) {
+        if(!useCache)
+            _deviceUsageFlow.value = Resource.loading()
+
+        try {
+            if(!isInitialised || !useCache) {
+                reset(ignoreSystemApps, ignoredPackages)
+            }
+
+            if(monthlyDeviceUsageCache[monthOffset] == null) {
+                monthlyDeviceUsageCache[monthOffset] = repository.getMonthDeviceUsage(
+                    timeInterval = DateTimeUtils.computeMonthInterval(
+                        now = calculationTimestamp,
+                        monthOffset = monthOffset
+                    ),
+                    ignoreSystemApps = ignoreSystemApps,
+                    ignoredPackages = ignoredPackages
+                )
+            }
+
+            monthlyDeviceUsageCache[monthOffset]?.let {
+                _deviceUsageFlow.value = Resource.success(it)
+            } ?: run {
+                throw Exception("Cache is null.")
+            }
+
+        } catch (e: Exception) {
+            _deviceUsageFlow.value = Resource.failure(e)
+        }
+    }
+
+    // ---- Year ----
+
+    private val yearlyDeviceUsageCache: MutableMap<Int, YearlyDeviceUsage> = mutableMapOf()
+
+    suspend fun calculateYearDeviceUsage(
+        ignoreSystemApps: Boolean,
+        ignoredPackages: List<String>,
+        yearOffset: Int,
+        useCache: Boolean = true
+    ) {
+        if(!useCache)
+            _deviceUsageFlow.value = Resource.loading()
+
+        try {
+            if(!isInitialised || !useCache) {
+                reset(ignoreSystemApps, ignoredPackages)
+            }
+
+            if(yearlyDeviceUsageCache[yearOffset] == null) {
+                yearlyDeviceUsageCache[yearOffset] = repository.getYearDeviceUsage(
+                    timeInterval = DateTimeUtils.computeYearInterval(
+                        now = calculationTimestamp,
+                        yearOffset = yearOffset
+                    ),
+                    ignoreSystemApps = ignoreSystemApps,
+                    ignoredPackages = ignoredPackages
+                )
+            }
+
+            yearlyDeviceUsageCache[yearOffset]?.let {
+                _deviceUsageFlow.value = Resource.success(it)
+            } ?: run {
+                throw Exception("Cache is null.")
+            }
+
+        } catch (e: Exception) {
+            _deviceUsageFlow.value = Resource.failure(e)
+        }
+    }
+
+    // ---- All ----
+
+    private var allDeviceUsageCache: AllDeviceUsage? = null
+
+    suspend fun calculateAllDeviceUsage(
+        ignoreSystemApps: Boolean,
+        ignoredPackages: List<String>,
+        useCache: Boolean = true
+    ) {
+        if(!useCache)
+            _deviceUsageFlow.value = Resource.loading()
+
+        try {
+            if(!isInitialised || !useCache) {
+                reset(ignoreSystemApps, ignoredPackages)
+            }
+
+            if(allDeviceUsageCache == null) {
+                allDeviceUsageCache = repository.getAllDeviceUsage(
+                    ignoreSystemApps = ignoreSystemApps,
+                    ignoredPackages = ignoredPackages
+                )
+            }
+
+            allDeviceUsageCache?.let {
+                _deviceUsageFlow.value = Resource.success(it)
+            } ?: run {
+                throw Exception("Cache is null.")
+            }
+
+        } catch (e: Exception) {
+            _deviceUsageFlow.value = Resource.failure(e)
+        }
+    }
+
     // ---- Reset ----
 
     private suspend fun reset(
@@ -129,6 +246,9 @@ class DeviceUsageUseCase(private val repository: DeviceUsageRepository) {
         for(i in dailyDeviceUsageCache.indices) {
             dailyDeviceUsageCache[i] = null
         }
+        monthlyDeviceUsageCache.clear()
+        yearlyDeviceUsageCache.clear()
+        allDeviceUsageCache = null
         calculateDeviceUsage(ignoreSystemApps, ignoredPackages)
     }
 }
